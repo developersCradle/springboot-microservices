@@ -44,6 +44,7 @@ response:
 8. Publish all sources code and relevant files in github or similar service and send the link to the repo so that the implementation can be reviewed.
 
 You get bonus points if:
+
 - You use and understand reactor (https://www.baeldung.com/reactor-core).
 - You create a separate wep application which utilizes the created REST API and shows the relevant country information in a browser.
 

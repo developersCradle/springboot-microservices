@@ -1,3 +1,9 @@
+
+<p align="center">
+    <img id="nordea" src="nordeaLogo.gif">
+</p>
+
+
 ## Challenge description: COUNTRY SERVICE.
 
 Implement a microservice which provides a list of countries and, in addition, provides more detailed information per country.
@@ -66,8 +72,14 @@ You get bonus points if:
 
 ## How to run the application.
 
+# Container
+
 Just start the containers by running the following command:
 
 ```bash
 docker compose up
 ```
+
+# Maven 
+
+...

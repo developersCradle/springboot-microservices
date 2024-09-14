@@ -1,23 +1,21 @@
 package com.country_service.country_service_backend.domain;
 
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+
 /*
- * Response dummy from REST API call. This needs to be same as what is returned form REST API, otherwise serialization and de-serialization can have some issues. 
- */
+ * Models Country domain class. 
+ * 
+*/
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Country {
-
-		public boolean error;
-		public String msg;
-		public List<CountryData> data;
-
+	private String name;
+	@JsonProperty("country_code") // Staying consistent with the formatting
+	private String countryCode;
 }

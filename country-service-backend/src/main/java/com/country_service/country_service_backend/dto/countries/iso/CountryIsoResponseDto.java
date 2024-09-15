@@ -1,4 +1,4 @@
-package com.country_service.country_service_backend.dto;
+package com.country_service.country_service_backend.dto.countries.iso;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CountryIsoDto {
+public class CountryIsoResponseDto {
 	private String name;
 	/*
 	 * @JsonProperty is used to map a Java object property to a JSON property with a

@@ -1,14 +1,12 @@
-package com.country_service.country_service_backend.dto;
-
-import java.util.List;
+package com.country_service.country_service_backend.dto.countries.population;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /*
- * Models answer for countries and ISO codes retrieved.
- * URL: http://countriesnow.space/api/v0.1/countries/iso
+ * Models answer for single country and population data.
+ * URL: https://countriesnow.space/api/v0.1/countries/population
  * 
  * Response dummy from REST API call. This needs to be same as what is returned form REST API, otherwise serialization and de-serialization can have some issues. 
 */
@@ -16,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CountriesIsoDto {
+public class CountriesPopulationResponseDto {
 	private boolean error;
 	private String msg;
-	private List<CountryIsoDto> data;
+	private CountryPopulationResponseDto data;
 }

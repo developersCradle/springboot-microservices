@@ -1,6 +1,6 @@
 
 <p align="center">
-    <img id="nordea" src="nordeaLogo.gif">
+    <img id="nordea" src="nordeaLogo.gif" width=400>
 </p>
 
 
@@ -70,6 +70,9 @@ You get bonus points if:
 - We are making `application.yml` for this microservices.
     - If this microservice would ran in different environment. 
 
+- Domain classes represents classes inside business logic.
+- DTO classes represents REST API
+
 ## How to run the application.
 
 # Container
@@ -83,3 +86,75 @@ docker compose up
 # Maven 
 
 ...
+
+
+<details>
+<summary id="problem1">Weird Feature 1.</summary>
+
+
+- I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **PostMan**, but not for **ReactorNetty**.
+
+- Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **Netty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
+    - I Noticed the only difference mainly was headers. Left picture from **ReactorNetty** request and right form **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty** so it would work, but my luck failed. 
+
+<p id="error" align="center">
+    <img src="doneFromNettyHeaders.PNG" style="float:left; margin-right:10px;" width="320"  height="100">
+    <img src="doneFromPostManHeaders.PNG" style="float:left;" width="320" height="100">
+</p>
+
+- Due to the inspections how PostMan had it working with this API. It had following settings `Accept: */*`. 
+
+- Luckily returning `Mono<String>` from **POST** function and changing NettyReactor headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API give JSON), gave me positive surprise.
+
+
+```
+    @Bean
+    public WebClient webClient(WebClient.Builder builder) {
+        return builder.defaultHeader(
+        		"Accept", MediaType.ALL_VALUE)
+        		.build();
+    }
+```
+
+- Below positive surprise. I was not crazy and seeing things.
+
+<img  src="positveSupriseAboutPOSTapi.PNG" alt="alt text" width="600"/>
+
+- Also, WebClient started to worked normally after right Header information `.doOnSuccess(result -> System.out.println("Response: " + result));` gave me `Response: Moved Permanently. Redirecting to /api/v0.1/countries/population/q?country=Finland`.
+
+
+</details>
+
+<!-- 
+# Weird Feature 1.
+
+- I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **PostMan**, but not for **ReactorNetty**.
+
+- Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **Netty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
+    - I Noticed the only difference mainly was headers. Left picture from **ReactorNetty** request and right form **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty*' so it would work, but my luck failed. 
+
+<p id="error" align="center">
+    <img src="doneFromNettyHeaders.PNG" style="float:left; margin-right:10px;" width="320"  height="100">
+    <img src="doneFromPostManHeaders.PNG" style="float:left;" width="320" height="100">
+</p>
+
+- Due to the inspections how PostMan had it working with this API. It had following settings `Accept: */*`. 
+
+- Luckily returning `Mono<String>` from **POST** function and changing NettyReactor headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API give JSON), gave me positive surprise.
+
+
+```
+    @Bean
+    public WebClient webClient(WebClient.Builder builder) {
+        return builder.defaultHeader(
+        		"Accept", MediaType.ALL_VALUE)
+        		.build();
+    }
+```
+
+- Below positive surprise. I was not crazy and seeing things.
+
+<img  src="positveSupriseAboutPOSTapi.PNG" alt="alt text" width="600"/>
+
+- Also, WebClient started to worked normally after right Header information `.doOnSuccess(result -> System.out.println("Response: " + result));` gave me `Response: Moved Permanently. Redirecting to /api/v0.1/countries/population/q?country=Finland`. 
+-->

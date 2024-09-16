@@ -85,12 +85,15 @@ docker compose up
 
 # Maven 
 
+
 ...
 
+<!-- Remove these when all points ready here
 
-<details style="visibility:hidden">
+<details>
 <summary id="problem1">Weird Feature 1.</summary>
 
+//TODO tee tähän johtopäätös https://countriesnow.space/api/v0.1/countries/population
 
 - I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **PostMan**, but not for **ReactorNetty**.
 
@@ -104,7 +107,7 @@ docker compose up
 
 - Due to the inspections how PostMan had it working with this API. It had following settings `Accept: */*`. 
 
-- Luckily returning `Mono<String>` from **POST** function and changing NettyReactor headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
+- Luckily returning `Mono<String>` from **POST** function and setting `@Data` with POST param DTO class with the changing **NettyReactor** headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
 
 
 ```
@@ -116,11 +119,24 @@ docker compose up
     }
 ```
 
+- With DTO class.
+
+```
+@Data
+@AllArgsConstructor
+public class ParamClass {
+	String country;
+}
+```
 - Below positive surprise. I was not crazy and seeing things.
 
 <img  src="positveSupriseAboutPOSTapi.PNG" alt="alt text" width="600"/>
 
 - Also, WebClient started to worked normally after right Header information `.doOnSuccess(result -> System.out.println("Response: " + result));` gave me `Response: Moved Permanently. Redirecting to /api/v0.1/countries/population/q?country=Finland`.
 
+- All thought it was saying **redirecting**, i could not catch redirect message in network tab. Maybe it was due **ReactorNetty** needs to be configured to process these one, but for now i decided to just use th given **hint** as API query and move forward with the task :)
+
+<img  src="noRedirectCaptured.PNG" alt="alt text" width="600"/>
 
 </details>
+ -->

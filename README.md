@@ -62,16 +62,16 @@ You get bonus points if:
     - ✅ **WebClient** ✅ Interacting with 3rd party endpoints, WebClient was chosen for making non-blocking & asynchronous endpoint.
     - ❌ **RestTemplate** ❌ Older way to make calls in Spring and synchronous. [RestTemplate](https://www.baeldung.com/rest-template).
     - ❌ **Feign Client** ❌ Also synchronous. [Feign Client](https://www.baeldung.com/spring-boot-feignclient-vs-webclient).
-- [![Netty](https://img.shields.io/badge/Netty-grey?style=for-the-badge&logo=googleearth&logoColor=FFFFFF)](https://projectreactor.io/docs/netty/1.1.21/reference/index.html)
+- [![Netty](https://img.shields.io/badge/Netty-grey?style=for-the-badge&logo=googleearth&logoColor=FFFFFF)](https://projectreactor.io/docs/netty/1.1.21/reference/index.html).
     - ✅**Netty**✅ is suited for Microservices Architecture, for its non-blocking I/O client-server nature.
-- [![Lombok](https://img.shields.io/badge/Lombok-green?style=for-the-badge)](https://docs.spring.io/spring-framework/reference/web/webflux.html) 
+- [![Lombok](https://img.shields.io/badge/Lombok-green?style=for-the-badge)](https://docs.spring.io/spring-framework/reference/web/webflux.html). 
     - ✅**Lombok**✅ For reducing boilerplate code.
 
 - We are making `application.yml` for this microservices.
     - If this microservice would ran in different environment. 
 
 - Domain classes represents classes inside business logic.
-- DTO classes represents REST API
+- DTO classes represents REST API.
 
 ## How to run the application.
 
@@ -88,23 +88,23 @@ docker compose up
 ...
 
 
-<details>
+<details style="visibility:hidden">
 <summary id="problem1">Weird Feature 1.</summary>
 
 
 - I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **PostMan**, but not for **ReactorNetty**.
 
-- Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **Netty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
-    - I Noticed the only difference mainly was headers. Left picture from **ReactorNetty** request and right form **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty** so it would work, but my luck failed. 
+- Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **ReactorNetty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
+    - I Noticed the only difference mainly was headers. Left picture from **ReactorNetty** request and right from **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty** so it would work, but my luck failed. 
 
 <p id="error" align="center">
-    <img src="doneFromNettyHeaders.PNG" style="float:left; margin-right:10px;" width="320"  height="100">
-    <img src="doneFromPostManHeaders.PNG" style="float:left;" width="320" height="100">
+    <img src="doneFromNettyHeaders.PNG" style="float:left; margin-right:10px;" width="400"  height="100">
+    <img src="doneFromPostManHeaders.PNG" style="float:left;" width="400" height="100">
 </p>
 
 - Due to the inspections how PostMan had it working with this API. It had following settings `Accept: */*`. 
 
-- Luckily returning `Mono<String>` from **POST** function and changing NettyReactor headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API give JSON), gave me positive surprise.
+- Luckily returning `Mono<String>` from **POST** function and changing NettyReactor headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
 
 
 ```
@@ -124,37 +124,3 @@ docker compose up
 
 
 </details>
-
-<!-- 
-# Weird Feature 1.
-
-- I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **PostMan**, but not for **ReactorNetty**.
-
-- Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **Netty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
-    - I Noticed the only difference mainly was headers. Left picture from **ReactorNetty** request and right form **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty*' so it would work, but my luck failed. 
-
-<p id="error" align="center">
-    <img src="doneFromNettyHeaders.PNG" style="float:left; margin-right:10px;" width="320"  height="100">
-    <img src="doneFromPostManHeaders.PNG" style="float:left;" width="320" height="100">
-</p>
-
-- Due to the inspections how PostMan had it working with this API. It had following settings `Accept: */*`. 
-
-- Luckily returning `Mono<String>` from **POST** function and changing NettyReactor headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API give JSON), gave me positive surprise.
-
-
-```
-    @Bean
-    public WebClient webClient(WebClient.Builder builder) {
-        return builder.defaultHeader(
-        		"Accept", MediaType.ALL_VALUE)
-        		.build();
-    }
-```
-
-- Below positive surprise. I was not crazy and seeing things.
-
-<img  src="positveSupriseAboutPOSTapi.PNG" alt="alt text" width="600"/>
-
-- Also, WebClient started to worked normally after right Header information `.doOnSuccess(result -> System.out.println("Response: " + result));` gave me `Response: Moved Permanently. Redirecting to /api/v0.1/countries/population/q?country=Finland`. 
--->

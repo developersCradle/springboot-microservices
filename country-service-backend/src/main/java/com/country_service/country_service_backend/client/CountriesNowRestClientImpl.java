@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.country_service.country_service_backend.dto.countries.flag.images.CountryFlagImageInfoResponseDto;
+import com.country_service.country_service_backend.dto.countries.flag.images.CountryFlagImageResponseDto;
 import com.country_service.country_service_backend.dto.countries.iso.CountriesIsoResponseDto;
 import com.country_service.country_service_backend.dto.countries.iso.CountryIsoResponseDto;
 import com.country_service.country_service_backend.dto.countries.population.CountriesPopulationResponseDto;
@@ -88,6 +90,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	 *  Get single country and population data with GET.
 	 *  https://countriesnow.space/api/v0.1/countries/population/q?country=Finland
 	 */
+	
 	@Override
 	public Flux<CountryPopulationSingleCountResponseDto> getCountyWithPopulationByGet(String countryName) {
 		
@@ -103,15 +106,46 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 
 	/*
 	 * Get single country and flag URL with POST.
+	 * https://countriesnow.space/api/v0.1/countries/flag/images
+	 * 
+	 * @deprecated use {@link #getCountyWithWithFlagUrlByGet(String countryName)} instead.
+	 * This end point does not work! Check https://github.com/developersCradle/springboot-microservices#problem2
+	 * for more!
 	 */
+		 			
+	@Deprecated	 			
 	@Override
 	public Mono<?> getCountyWithWithFlagUrlByPost(String countryIso2) {
-		return null;
+		
+		String url = countriesNowUrl.concat("/flag/images");
+		
+		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
+		
+		return webClient.post()
+        .uri(url)
+        .bodyValue(new ParamClass("NG"))
+        .retrieve()
+        .bodyToMono(String.class)
+        .doOnSuccess(result -> System.out.println("Response from getCountyWithWithFlagUrlByPost: " + result));
+		
+		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
+		
 	}
 
+	/* 
+	 * Get single country with flag image GET.
+	 * https://countriesnow.space/api/v0.1/countries/flag/images/q?country=Finland
+	 */
 
-
-	
-	
-
+	@Override
+	public Mono<CountryFlagImageInfoResponseDto> getCountyWithWithFlagUrlByGet(String countryName) {
+		
+		String url = countriesNowUrl.concat("flag/images/q?country={countryName}");
+		
+		return webClient.get()
+	                .uri(url, countryName)
+	                .retrieve()
+	                .bodyToMono(CountryFlagImageResponseDto.class)
+	                .flatMap(response -> Mono.just(response.getData()));
+		 }
 }

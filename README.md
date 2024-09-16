@@ -71,7 +71,7 @@ You get bonus points if:
     - If this microservice would ran in different environment. 
 
 - Domain classes represents classes inside business logic.
-- DTO classes represents REST API.
+- DTO classes represents REST API and are modeled using `country.now` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing.
 
 ## How to run the application.
 
@@ -88,12 +88,10 @@ docker compose up
 
 ...
 
-<!-- Remove these when all points ready here
-
+<!-- Remove these when all points ready here -->
+<!--
 <details>
 <summary id="problem1">Weird Feature 1.</summary>
-
-//TODO tee tähän johtopäätös https://countriesnow.space/api/v0.1/countries/population
 
 - I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **PostMan**, but not for **ReactorNetty**.
 
@@ -101,14 +99,13 @@ docker compose up
     - I Noticed the only difference mainly was headers. Left picture from **ReactorNetty** request and right from **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty** so it would work, but my luck failed. 
 
 <p id="error" align="center">
-    <img src="doneFromNettyHeaders.PNG" style="float:left; margin-right:10px;" width="400"  height="100">
-    <img src="doneFromPostManHeaders.PNG" style="float:left;" width="400" height="100">
+    <img src="doneFromNettyHeaders.PNG" style="float:left; margin-right:10px;" width="500"  height="100">
+    <img src="doneFromPostManHeaders.PNG" style="float:left;" width="500" height="100">
 </p>
 
 - Due to the inspections how PostMan had it working with this API. It had following settings `Accept: */*`. 
 
 - Luckily returning `Mono<String>` from **POST** function and setting `@Data` with POST param DTO class with the changing **NettyReactor** headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
-
 
 ```
     @Bean
@@ -139,4 +136,12 @@ public class ParamClass {
 <img  src="noRedirectCaptured.PNG" alt="alt text" width="600"/>
 
 </details>
- -->
+<details>
+<summary id="problem2">Weird Feature 2.</summary>
+
+- I came to same conclusion as last error message when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/flag/images` it would work for **PostMan**, but not for **ReactorNetty**. This time message was `"Moved Permanently. Redirecting to /api/v0.1/countries/flag/images/q?country=NG"` and i had much fun clicking eastern egg like 5 minutes :D. No redirect messages again.
+
+<img  src="positveSupriseAboutPOSTapiKauneutta.PNG" alt="alt text" width="600"/>
+
+</details>
+-->

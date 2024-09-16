@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import com.country_service.country_service_backend.client.CountriesNowRestClientImpl;
 import com.country_service.country_service_backend.domain.Countries;
 import com.country_service.country_service_backend.domain.Country;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import reactor.core.publisher.Mono;
 
@@ -43,12 +42,21 @@ public class CountriesServiceImpl implements CountriesService {
 	*/
 	@Override
 	public Mono<Country> getInformationAboutCountry(String countryName) {
+		
+		
+		// Merge Country here
+		
+		// return countriesNowRestClient.getCountyWithPopulationByGet("Finland").last() for latest population from API.
+		// countriesNowRestClient.getCountyWithWithFlagUrlByGet("Finland") for flag url from API.
+		
+		
 		return Mono.just(new Country("Country name","Country code","Capital", "1000 people", "some url"));
 	}
 
 	@Override
 	public Mono<?> getBetaStuff() {
-		return countriesNowRestClient.getCountyWithPopulationByGet("Finland").last();
+		
+		return countriesNowRestClient.getCountyWithWithFlagUrlByGet("Finland");
 	}
 
 }

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.country_service.country_service_backend.client.CountriesNowRestClientImpl;
 import com.country_service.country_service_backend.domain.Countries;
 import com.country_service.country_service_backend.domain.Country;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import reactor.core.publisher.Mono;
 
@@ -23,15 +24,32 @@ public class CountriesServiceImpl implements CountriesService {
 		this.countriesNowRestClient = countriesNowRestClient;
 	}
 
+	/*
+	* Returns Countries.
+	*/
 	@Override
 	public Mono<Countries> getCountries() {
 		
 		/*
 		*  Mapping Flux elements into Mono of list, since it was in specifications.
 		*/
-		return countriesNowRestClient.getCountriesWithIso()
-				.map(CountryIsoDto -> new Country(CountryIsoDto.getName(), CountryIsoDto.getIso2())).collectList()
+		return countriesNowRestClient.getCountriesWithIsoByGet()
+				.map(CountryIsoResponseDto -> new Country(CountryIsoResponseDto.getName(), CountryIsoResponseDto.getIso2())).collectList()
 				.map(Countries::new); // Iso2 will be used, since it was the same format as in specifications.
 	}
 
+	/*
+	* Returns InformationAboutCountry.
+	*/
+	@Override
+	public Mono<Country> getInformationAboutCountry(String countryName) {
+		return Mono.just(new Country("Country name","Country code","Capital", "1000 people", "some url"));
+	}
+
+	@Override
+	public Mono<String> getBetaStuff() {
+		return countriesNowRestClient.getCountyWithPopulationByPost("beta");
+	}
+
 }
+

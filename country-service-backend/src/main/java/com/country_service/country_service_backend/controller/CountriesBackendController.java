@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.country_service.country_service_backend.domain.Countries;
+import com.country_service.country_service_backend.domain.Country;
 import com.country_service.country_service_backend.service.CountriesServiceImpl;
 
 import reactor.core.publisher.Flux;
@@ -25,6 +26,14 @@ public class CountriesBackendController {
 	}
 
 
+
+    //Testing end point for all these weird API end points.
+	@GetMapping("/test")
+    public Mono<String> getBetaStuff( ) {
+        return countriesService.getBetaStuff();
+    }
+
+    
 	@GetMapping("/")
     public Mono<Countries> getAllCountries( ) {
         return countriesService.getCountries();
@@ -32,10 +41,8 @@ public class CountriesBackendController {
     
 
     @GetMapping("/{nameOfCountry}")
-    public Flux<?> getInformationAboutCountry(@PathVariable String nameOfCountry) {
-    	return Flux.fromIterable(List.of("Finland", "FI","5491817", "flag url"))
-        		.log();
-        
+    public Mono<Country> getInformationAboutCountry(@PathVariable String nameOfCountry) {
+    	return countriesService.getInformationAboutCountry("Finland");
     }
 
     // TODO(Heikki, StreamAPI) Try to make using SSE a  streaming end-point. Experiment.

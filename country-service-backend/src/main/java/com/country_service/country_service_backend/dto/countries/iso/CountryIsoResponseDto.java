@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CountryIsoResponseDto {
 	private String name;
+	
 	/*
 	 * @JsonProperty is used to map a Java object property to a JSON property with a
 	 * different name, or to override the default mapping.
@@ -26,6 +27,7 @@ public class CountryIsoResponseDto {
 	 * For now we are going override default mapping of Spring. Jackson is used behind scenes in
 	 * Spring. Fixes bug with iso fields not getting initialized.
 	 */
+	
 	@JsonProperty("Iso2")
 	private String iso2;
 	@JsonProperty("Iso3")

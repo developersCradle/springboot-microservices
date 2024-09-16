@@ -14,6 +14,6 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CountryPopulationSingleCountResponseDto {
-    private int year;
-    private int value;
+    private Integer year;
+    private Integer value;
 }

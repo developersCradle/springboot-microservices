@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 /*
  * Models Country domain class.
 */
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,6 +31,7 @@ public class Country {
 	/*
 	 * We want only these two to be shown in certain use case.
 	 */
+	
 	public Country(String name, String countryCode) {
 		this.name = name;
 		this.countryCode = countryCode;

@@ -47,8 +47,8 @@ public class CountriesServiceImpl implements CountriesService {
 	}
 
 	@Override
-	public Mono<String> getBetaStuff() {
-		return countriesNowRestClient.getCountyWithPopulationByPost("beta");
+	public Mono<?> getBetaStuff() {
+		return countriesNowRestClient.getCountyWithPopulationByGet("Finland").last();
 	}
 
 }

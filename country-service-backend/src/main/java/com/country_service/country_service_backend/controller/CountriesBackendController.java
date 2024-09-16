@@ -29,7 +29,7 @@ public class CountriesBackendController {
 
     //Testing end point for all these weird API end points.
 	@GetMapping("/test")
-    public Mono<String> getBetaStuff( ) {
+    public Mono<?> getBetaStuff( ) {
         return countriesService.getBetaStuff();
     }
 

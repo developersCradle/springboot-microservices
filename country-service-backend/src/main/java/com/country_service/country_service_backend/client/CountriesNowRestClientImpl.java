@@ -6,6 +6,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import com.country_service.country_service_backend.dto.countries.iso.CountriesIsoResponseDto;
 import com.country_service.country_service_backend.dto.countries.iso.CountryIsoResponseDto;
+import com.country_service.country_service_backend.dto.countries.population.CountriesPopulationResponseDto;
+import com.country_service.country_service_backend.dto.countries.population.CountryPopulationSingleCountResponseDto;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -61,7 +63,6 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	 * @deprecated use {@link #getCountyWithPopulationByGet(String countryName)} instead.
 	 * This end point does not work! Check https://github.com/developersCradle/springboot-microservices#problem1
 	 * for more!
-	 *   
 	 */
 
 	@Deprecated
@@ -70,7 +71,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		
 		String url = countriesNowUrl.concat("population");
 
-		//url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
+		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
 		return webClient.post()
         .uri(url)
@@ -88,9 +89,17 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	 *  https://countriesnow.space/api/v0.1/countries/population/q?country=Finland
 	 */
 	@Override
-	public Mono<String> getCountyWithPopulationByGet(String countryName) {
-		return null;
-	}
+	public Flux<CountryPopulationSingleCountResponseDto> getCountyWithPopulationByGet(String countryName) {
+		
+		String url = countriesNowUrl.concat("population/q?country={countryName}");
+		
+		 return webClient.get()
+	                .uri(url, countryName)
+	                .retrieve()
+	                .bodyToMono(CountriesPopulationResponseDto.class) // Map the entire response to a Mono.
+		 			.flatMapMany(response -> Flux.fromIterable(response.getData().getPopulationCounts())); // Get only population counts.
+		 			};
+		 			
 
 	/*
 	 * Get single country and flag URL with POST.

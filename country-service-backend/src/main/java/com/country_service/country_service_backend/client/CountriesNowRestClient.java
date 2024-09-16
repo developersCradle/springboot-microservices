@@ -1,6 +1,7 @@
 package com.country_service.country_service_backend.client;
 
 
+import com.country_service.country_service_backend.dto.countries.capital.CountryCapitalInfoResponseDto;
 import com.country_service.country_service_backend.dto.countries.flag.images.CountryFlagImageInfoResponseDto;
 import com.country_service.country_service_backend.dto.countries.iso.CountryIsoResponseDto;
 import com.country_service.country_service_backend.dto.countries.population.CountryPopulationSingleCountResponseDto;
@@ -15,13 +16,16 @@ public interface CountriesNowRestClient {
 
 	@Deprecated
 	Mono<String> getCountyWithPopulationByPost(String countryName);
-	
 	/* Flux since REST endpoint returns multiple values, even thought its wrapped in Mono */
 	Flux<CountryPopulationSingleCountResponseDto> getCountyWithPopulationByGet(String countryName);
 	
 	@Deprecated
-	Mono<?> getCountyWithWithFlagUrlByPost(String countryIso2);
+	Mono<String> getCountyWithWithFlagUrlByPost(String countryIso2);
 	Mono<CountryFlagImageInfoResponseDto> getCountyWithWithFlagUrlByGet(String countryName);
 	
+	@Deprecated
+	Mono<String> getCountyWithCapitalByPost(String countryName);
+	Mono<CountryCapitalInfoResponseDto> getCountyWithCapitalByGet(String countryName);
+
 
 }

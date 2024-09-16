@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.country_service.country_service_backend.dto.countries.capital.CountryCapitalInfoResponseDto;
+import com.country_service.country_service_backend.dto.countries.capital.CountryCapitalResponseDto;
 import com.country_service.country_service_backend.dto.countries.flag.images.CountryFlagImageInfoResponseDto;
 import com.country_service.country_service_backend.dto.countries.flag.images.CountryFlagImageResponseDto;
 import com.country_service.country_service_backend.dto.countries.iso.CountriesIsoResponseDto;
@@ -36,7 +38,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
     
     /*
      * Retrieves countries with ISO codes with GET.
-     * https://countriesnow.space/api/v0.1/countries/iso
+     * URL: https://countriesnow.space/api/v0.1/countries/iso
      * 
      * When we’re expecting multiple results from our computation, database, or external service call, then we should use Flux.
      * https://www.baeldung.com/java-reactor-flux-vs-mono#mono-vs-flux
@@ -60,7 +62,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	
 	/*
 	 * Get single country and population data with POST.
-	 * https://countriesnow.space/api/v0.1/countries/population
+	 * URL: https://countriesnow.space/api/v0.1/countries/population
 	 * 
 	 * @deprecated use {@link #getCountyWithPopulationByGet(String countryName)} instead.
 	 * This end point does not work! Check https://github.com/developersCradle/springboot-microservices#problem1
@@ -76,11 +78,11 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
 		return webClient.post()
-        .uri(url)
-        .bodyValue(new ParamClass("Finland"))
-        .retrieve()
-        .bodyToMono(String.class)
-        .doOnSuccess(result -> System.out.println("Response from getCountyWithPopulationByPost: " + result));
+				.uri(url)
+				.bodyValue(new ParamClass("Finland"))
+				.retrieve()
+				.bodyToMono(String.class)
+				.doOnSuccess(result -> System.out.println("Response from getCountyWithPopulationByPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
   
@@ -88,7 +90,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 
 	/*
 	 *  Get single country and population data with GET.
-	 *  https://countriesnow.space/api/v0.1/countries/population/q?country=Finland
+	 *  URL: https://countriesnow.space/api/v0.1/countries/population/q?country=Finland
 	 */
 	
 	@Override
@@ -106,7 +108,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 
 	/*
 	 * Get single country and flag URL with POST.
-	 * https://countriesnow.space/api/v0.1/countries/flag/images
+	 * URL: https://countriesnow.space/api/v0.1/countries/flag/images
 	 * 
 	 * @deprecated use {@link #getCountyWithWithFlagUrlByGet(String countryName)} instead.
 	 * This end point does not work! Check https://github.com/developersCradle/springboot-microservices#problem2
@@ -115,18 +117,18 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		 			
 	@Deprecated	 			
 	@Override
-	public Mono<?> getCountyWithWithFlagUrlByPost(String countryIso2) {
+	public Mono<String> getCountyWithWithFlagUrlByPost(String countryIso2) {
 		
 		String url = countriesNowUrl.concat("/flag/images");
 		
 		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
 		return webClient.post()
-        .uri(url)
-        .bodyValue(new ParamClass("NG"))
-        .retrieve()
-        .bodyToMono(String.class)
-        .doOnSuccess(result -> System.out.println("Response from getCountyWithWithFlagUrlByPost: " + result));
+				.uri(url)
+				.bodyValue(new ParamClass("NG"))
+				.retrieve()
+				.bodyToMono(String.class)
+				.doOnSuccess(result -> System.out.println("Response from getCountyWithWithFlagUrlByPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
 		
@@ -134,7 +136,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 
 	/* 
 	 * Get single country with flag image GET.
-	 * https://countriesnow.space/api/v0.1/countries/flag/images/q?country=Finland
+	 * URL: https://countriesnow.space/api/v0.1/countries/flag/images/q?country=Finland
 	 */
 
 	@Override
@@ -148,4 +150,49 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	                .bodyToMono(CountryFlagImageResponseDto.class)
 	                .flatMap(response -> Mono.just(response.getData()));
 		 }
+
+	/*
+	 * Get a specific country and its capital POST.
+	 * URL: https://countriesnow.space/api/v0.1/countries/capital
+	 * 
+	 * @deprecated use {@link #getCountyWithCapitalByGet(String countryName)} instead.
+	 * This end point does not work! Check https://github.com/developersCradle/springboot-microservices#problem3
+	 * for more!
+	 */
+	
+	@Deprecated
+	@Override
+	public Mono<String> getCountyWithCapitalByPost(String countryName) {
+		
+		String url = countriesNowUrl.concat("/capital");
+		
+		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
+		
+		return webClient.post()
+				.uri(url)
+				.bodyValue(new ParamClass("nigeria"))
+				.retrieve()
+				.bodyToMono(String.class)
+				.doOnSuccess(result -> System.out.println("Response from getCountyWithCapitalPost: " + result));
+		
+		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
+	}
+
+	/*
+	 * Get a specific country and its capital GET.
+	 * URL: https://countriesnow.space/api/v0.1/countries/capital/q?country=nigeria
+	 */
+	
+	@Override
+	public Mono<CountryCapitalInfoResponseDto> getCountyWithCapitalByGet(String countryName) {
+
+	String url = countriesNowUrl.concat("capital/q?country={countryName}");
+	
+	 return webClient.get()
+               .uri(url, countryName)
+               .retrieve()
+               .bodyToMono(CountryCapitalResponseDto.class) // Map the entire response to a Mono.
+               .flatMap(response -> Mono.just(response.getData())); // Get only capital information.
+	 };
+		
 }

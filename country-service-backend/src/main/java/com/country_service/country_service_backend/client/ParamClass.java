@@ -6,6 +6,8 @@ import lombok.Data;
 /*
  * Represents body parameter class in:
  * https://countriesnow.space/api/v0.1/countries/population 
+ * https://countriesnow.space/api/v0.1/countries/flag/images
+ * https://countriesnow.space/api/v0.1/countries/capital
  */
 
 @Data

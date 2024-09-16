@@ -26,6 +26,7 @@ public class CountriesServiceImpl implements CountriesService {
 	/*
 	* Returns Countries.
 	*/
+	
 	@Override
 	public Mono<Countries> getCountries() {
 		
@@ -40,6 +41,7 @@ public class CountriesServiceImpl implements CountriesService {
 	/*
 	* Returns InformationAboutCountry.
 	*/
+	
 	@Override
 	public Mono<Country> getInformationAboutCountry(String countryName) {
 		
@@ -48,7 +50,7 @@ public class CountriesServiceImpl implements CountriesService {
 		
 		// return countriesNowRestClient.getCountyWithPopulationByGet("Finland").last() for latest population from API.
 		// countriesNowRestClient.getCountyWithWithFlagUrlByGet("Finland") for flag url from API.
-		
+		// countriesNowRestClient.getCountyWithCapitalByGet("Finland"); for getting capital
 		
 		return Mono.just(new Country("Country name","Country code","Capital", "1000 people", "some url"));
 	}
@@ -56,7 +58,7 @@ public class CountriesServiceImpl implements CountriesService {
 	@Override
 	public Mono<?> getBetaStuff() {
 		
-		return countriesNowRestClient.getCountyWithWithFlagUrlByGet("Finland");
+		return countriesNowRestClient.getCountyWithCapitalByGet("Finland");
 	}
 
 }

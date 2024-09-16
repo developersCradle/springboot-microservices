@@ -85,11 +85,12 @@ docker compose up
 
 # Maven 
 
-
 ...
 
 <!-- Remove these when all points ready here -->
+
 <!--
+
 <details>
 <summary id="problem1">Weird Feature 1.</summary>
 
@@ -144,4 +145,12 @@ public class ParamClass {
 <img  src="positveSupriseAboutPOSTapiKauneutta.PNG" alt="alt text" width="600"/>
 
 </details>
--->
+<details>
+<summary id="problem3">Weird Feature 3.</summary>
+
+- Again the same `https://countriesnow.space/api/v0.1/countries/capital` it would work for **PostMan**, but not for **ReactorNetty**. This time message was `"Moved Permanently. Redirecting to /api/v0.1/countries/capital/q?country=nigeria"` click, click. No redirect messages again.
+
+<img  src="positveSupriseAboutPOSTapiKauneuttaClickClikcAgain.PNG" alt="alt text" width="600"/>
+</details>
+ 
+ -->

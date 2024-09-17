@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import com.country_service.country_service_backend.client.CountriesNowRestClientImpl;
 import com.country_service.country_service_backend.domain.Countries;
 import com.country_service.country_service_backend.domain.Country;
+import com.country_service.country_service_backend.dto.countries.capital.CountryCapitalInfoResponseDto;
+import com.country_service.country_service_backend.dto.countries.flag.images.CountryFlagImageInfoResponseDto;
+import com.country_service.country_service_backend.dto.countries.population.CountryPopulationSingleCountResponseDto;
 
 import reactor.core.publisher.Mono;
 
@@ -33,11 +36,12 @@ public class CountriesServiceImpl implements CountriesService {
 		/*
 		*  Mapping Flux elements into Mono of list, since it was in specifications.
 		*/
+		
 		return countriesNowRestClient.getCountriesWithIsoByGet()
-				.map(CountryIsoResponseDto -> new Country(CountryIsoResponseDto.getName(), CountryIsoResponseDto.getIso2())).collectList()
-				.map(Countries::new); // Iso2 will be used, since it was the same format as in specifications.
+				.map(CountryIsoResponseDto -> new Country(CountryIsoResponseDto.getName(), CountryIsoResponseDto.getIso2())).collectList() // Iso2 will be used, since it was the same format as in specifications.
+				.map(Countries::new); // Keeps code concise and avoids unnecessary intermediate steps.
 	}
-
+	
 	/*
 	* Returns InformationAboutCountry.
 	*/
@@ -45,20 +49,30 @@ public class CountriesServiceImpl implements CountriesService {
 	@Override
 	public Mono<Country> getInformationAboutCountry(String countryName) {
 		
+		 Mono<CountryPopulationSingleCountResponseDto> populationMono = countriesNowRestClient.getCountyWithPopulationByGet(countryName).last(); // for latest population from API.
+		 Mono<CountryFlagImageInfoResponseDto> flagMono = countriesNowRestClient.getCountyWithWithFlagUrlByGet(countryName); // for flag URL from API.
+		 Mono<CountryCapitalInfoResponseDto> capitalMono = countriesNowRestClient.getCountyWithCapitalByGet(countryName); // for getting capital from API.
 		
-		// Merge Country here
-		
-		// return countriesNowRestClient.getCountyWithPopulationByGet("Finland").last() for latest population from API.
-		// countriesNowRestClient.getCountyWithWithFlagUrlByGet("Finland") for flag url from API.
-		// countriesNowRestClient.getCountyWithCapitalByGet("Finland"); for getting capital
-		
-		return Mono.just(new Country("Country name","Country code","Capital", "1000 people", "some url"));
+		    return Mono.zip(populationMono, flagMono, capitalMono)
+		            .map(tuple -> {
+		                CountryPopulationSingleCountResponseDto populationDto = tuple.getT1();
+		                CountryFlagImageInfoResponseDto flagDto = tuple.getT2();
+		                CountryCapitalInfoResponseDto capitalDto = tuple.getT3();
+		                return new Country(
+		                		flagDto.getName(), // name of country.
+		                		flagDto.getIso2(), // country_code, Iso2 will be used, since it was the same format as in specifications.
+		                		capitalDto.getCapital(), // capital         
+		                		populationDto.getValue(), // population, latest which comes from API
+		                		flagDto.getFlag() // URL to flag              
+		                );
+		            });
 	}
+
 
 	@Override
 	public Mono<?> getBetaStuff() {
 		
-		return countriesNowRestClient.getCountyWithCapitalByGet("Finland");
+		return countriesNowRestClient.getCountyWithPopulationByPost("Finland");
 	}
 
 }

@@ -11,7 +11,6 @@ import com.country_service.country_service_backend.domain.Countries;
 import com.country_service.country_service_backend.domain.Country;
 import com.country_service.country_service_backend.service.CountriesServiceImpl;
 
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @RestController
@@ -24,8 +23,6 @@ public class CountriesBackendController {
     public CountriesBackendController(CountriesServiceImpl countriesService) {
 		this.countriesService = countriesService;
 	}
-
-
 
     //Testing end point for all these weird API end points.
 	@GetMapping("/test")
@@ -42,7 +39,7 @@ public class CountriesBackendController {
 
     @GetMapping("/{nameOfCountry}")
     public Mono<Country> getInformationAboutCountry(@PathVariable String nameOfCountry) {
-    	return countriesService.getInformationAboutCountry("Finland");
+    	return countriesService.getInformationAboutCountry(nameOfCountry);
     }
 
     // TODO(Heikki, StreamAPI) Try to make using SSE a  streaming end-point. Experiment.

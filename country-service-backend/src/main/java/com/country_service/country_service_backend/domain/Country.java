@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY) // Hide empty fields. This is common domain class for answers. We are re using this for now. 
+@JsonInclude(JsonInclude.Include.NON_EMPTY) // Hide empty fields. This is common domain class for answers. We are are using this for now. 
 @JsonPropertyOrder({"name", "countryCode"}) // For make ordering like in specification.
 public class Country {
 
@@ -24,7 +24,7 @@ public class Country {
 	private String countryCode;
 
 	private String capital;
-	private String population;
+	private Integer population;
 	@JsonProperty("flag_file_url") // Staying consistent with the formatting.
 	private String flagFileUrl;
 

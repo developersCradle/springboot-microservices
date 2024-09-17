@@ -3,7 +3,6 @@
     <img id="nordea" src="nordeaLogo.gif" width=400>
 </p>
 
-
 ## Challenge description: COUNTRY SERVICE.
 
 Implement a microservice which provides a list of countries and, in addition, provides more detailed information per country.
@@ -54,7 +53,7 @@ You get bonus points if:
 - You use and understand [Reactor](https://www.baeldung.com/reactor-core).
 - You create a separate wep application which utilizes the created REST API and shows the relevant country information in a browser.
 
-## Architecture Explanation
+## Architecture Explanation.
 
 - [![Spring Boot](https://img.shields.io/static/v1?style=for-the-badge&message=Spring+Boot&color=6DB33F&logo=Spring+Boot&logoColor=FFFFFF&label=)](https://spring.io/), [![WebFlux](https://img.shields.io/badge/Spring%20WebFlux-grey?style=for-the-badge&logo=spring)](https://docs.spring.io/spring-framework/reference/web/webflux.html) and [![Project Reactor](https://img.shields.io/badge/Project_Reactor-grey?style=for-the-badge&logo=react&logoColor=FFFFFF)](https://projectreactor.io/).
     - Since this was in context of **Reactor**. I decided to use reactive approach, **Spring WebFlux**. 
@@ -71,11 +70,31 @@ You get bonus points if:
     - If this microservice would ran in different environment. 
 
 - Domain classes represents classes inside business logic.
-- DTO classes represents REST API and are modeled using `country.now` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing.
+- DTO classes represents REST API and are modeled using `countriesnow.space` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing. I chose not make DTO classes as reusable as possible, every DTO is unique.
 
-## How to run the application.
+# Front end.
 
-# Container
+<p align="center">
+    <img id="nordea" src="frontForNow.PNG" width=600>
+</p>
+
+- As being back end developer front end is low priority, but for now it has somewhat working list! Focusing now back end test/docker/running.
+
+## How to run the front end.
+
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+# Back end.
+
+## How to run the back end.
+
+Get the repository.
+
+```bash
+git clone https://github.com/developersCradle/springboot-microservices.git
+```
+
+# Docker way.
 
 Just start the containers by running the following command:
 
@@ -83,13 +102,13 @@ Just start the containers by running the following command:
 docker compose up
 ```
 
-# Maven 
+# Maven.
 
-...
+```bash
 
-<!-- Remove these when all points ready here -->
+```
 
-<!--
+# Anomalies 🔎👀.
 
 <details>
 <summary id="problem1">Weird Feature 1.</summary>
@@ -132,7 +151,7 @@ public class ParamClass {
 
 - Also, WebClient started to worked normally after right Header information `.doOnSuccess(result -> System.out.println("Response: " + result));` gave me `Response: Moved Permanently. Redirecting to /api/v0.1/countries/population/q?country=Finland`.
 
-- All thought it was saying **redirecting**, i could not catch redirect message in network tab. Maybe it was due **ReactorNetty** needs to be configured to process these one, but for now i decided to just use th given **hint** as API query and move forward with the task :)
+- All thought it was saying **redirecting**, i could not catch redirect message in network tab. Maybe it was due **ReactorNetty** needs to be configured to process these one, but for now i decided to just use this **hint** as API query and move forward with the task :)
 
 <img  src="noRedirectCaptured.PNG" alt="alt text" width="600"/>
 
@@ -153,4 +172,4 @@ public class ParamClass {
 <img  src="positveSupriseAboutPOSTapiKauneuttaClickClikcAgain.PNG" alt="alt text" width="600"/>
 </details>
  
- -->
+ 

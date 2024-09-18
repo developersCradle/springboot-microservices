@@ -67,13 +67,19 @@ You get bonus points if:
     - ✅**Lombok**✅ For reducing boilerplate code.
 
 - We are making `application.yml` for this microservices.
-    - If this microservice would ran in different environment. 
+    - If this microservice would ran in different environment, it would pick up appropriate configurations. 
 
 - Domain classes represents classes inside business logic.
 - DTO classes represents REST API and are modeled using `countriesnow.space` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing. I chose not make DTO classes as reusable as possible, every DTO is unique.
-- I have decided to use **ResponseEntity** from **Controller** class. [ReadMore](https://www.baeldung.com/spring-response-entity).
+- I have decided to use **ResponseEntity** in **Controller** class. [ReadMore](https://www.baeldung.com/spring-response-entity).
 
 > While **ResponseEntity** is very powerful, we shouldn’t overuse it. In simple cases, there are other options that satisfy our needs and they result in much cleaner code.
+
+- We are making tests!
+    - **Unit Tests**:
+        - For bean validation.
+    - **Integration Tests**:
+        - Todo
 
 # How to run!
 
@@ -118,18 +124,18 @@ Cool mvn command here!
 <details>
 <summary id="problem1">Weird Feature 1.</summary>
 
-- I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **PostMan**, but not for **ReactorNetty**.
+- I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **Postman**, but not for **Reactor Netty**.
 
-- Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **ReactorNetty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
-    - I Noticed the only difference mainly was headers. Upper picture from **ReactorNetty** request and below it is from **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty** so it would work, but my luck failed. 
+- Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **Reactor Netty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
+    - I Noticed the only difference mainly was headers. Upper picture from **Reactor Netty** request and below it is from **Postman**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **Reactor Netty** so it would work, but my luck failed. 
 
 <img src="doneFromNettyHeaders.PNG" width="500"  height="300">
 
 <img src="doneFromPostManHeaders.PNG" width="500" height="300">
 
-- Due to the inspections how PostMan had it working with this API. It had following settings `Accept: */*`. 
+- Due to the inspections how Postman had it working with this API. It had following settings `Accept: */*`. 
 
-- Luckily returning `Mono<String>` from **POST** function and setting `@Data` with POST param DTO class with the changing **NettyReactor** headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
+- Luckily returning `Mono<String>` from **POST** function and setting `@Data` with POST param DTO class with the changing **Reactor Netty** headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
 
 ```
     @Bean
@@ -155,7 +161,7 @@ public class ParamClass {
 
 - Also, WebClient started to worked normally after right Header information `.doOnSuccess(result -> System.out.println("Response: " + result));` gave me `Response: Moved Permanently. Redirecting to /api/v0.1/countries/population/q?country=Finland`.
 
-- All thought it was saying **redirecting**, i could not catch redirect message in network tab. Maybe it was due **ReactorNetty** needs to be configured to process these one, but for now i decided to just use this **hint** as API query and move forward with the task :)
+- All thought it was saying **redirecting**, i could not catch redirect message in network tab. Maybe it was due **Reactor Netty** needs to be configured to process these one, but for now i decided to just use this **hint** as API query and move forward with the task :)
 
 <img  src="noRedirectCaptured.PNG" alt="alt text" width="600"/>
 
@@ -163,7 +169,7 @@ public class ParamClass {
 <details>
 <summary id="problem2">Weird Feature 2.</summary>
 
-- I came to same conclusion as last error message when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/flag/images` it would work for **PostMan**, but not for **ReactorNetty**. This time message was `"Moved Permanently. Redirecting to /api/v0.1/countries/flag/images/q?country=NG"` and i had much fun clicking eastern egg like 5 minutes :D. No redirect messages again.
+- I came to same conclusion as last error message when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/flag/images` it would work for **Postman**, but not for **Reactor Netty**. This time message was `"Moved Permanently. Redirecting to /api/v0.1/countries/flag/images/q?country=NG"` and i had much fun clicking eastern egg like 5 minutes :D. No redirect messages again.
 
 <img  src="positveSupriseAboutPOSTapiKauneutta.PNG" alt="alt text" width="600"/>
 
@@ -171,7 +177,7 @@ public class ParamClass {
 <details>
 <summary id="problem3">Weird Feature 3.</summary>
 
-- Again the same `https://countriesnow.space/api/v0.1/countries/capital` it would work for **PostMan**, but not for **ReactorNetty**. This time message was `"Moved Permanently. Redirecting to /api/v0.1/countries/capital/q?country=nigeria"` click, click. No redirect messages again.
+- Again the same `https://countriesnow.space/api/v0.1/countries/capital` it would work for **Postman**, but not for **Reactor Netty**. This time message was `"Moved Permanently. Redirecting to /api/v0.1/countries/capital/q?country=nigeria"` click, click. No redirect messages again.
 
 <img  src="positveSupriseAboutPOSTapiKauneuttaClickClikcAgain.PNG" alt="alt text" width="600"/>
 </details>

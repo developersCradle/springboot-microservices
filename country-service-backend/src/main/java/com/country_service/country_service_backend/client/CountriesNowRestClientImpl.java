@@ -49,6 +49,8 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		
 		String url = countriesNowUrl.concat("iso");
 		
+		//TODO Heikki(error handling) make Web Client error handling!
+		
 		 return webClient.get()
 	                .uri(url)
 	                .retrieve()
@@ -77,6 +79,8 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 
 //		 url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
+		//TODO Heikki(error handling) make Web Client error handling!
+		
 		return webClient.post()
 				.uri(url)
 				.bodyValue(new ParamClass("Finland"))
@@ -97,6 +101,8 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	public Flux<CountryPopulationSingleCountResponseDto> getCountyWithPopulationByGet(String countryName) {
 		
 		String url = countriesNowUrl.concat("population/q?country={countryName}");
+		
+		//TODO Heikki(error handling) make Web Client error handling!
 		
 		 return webClient.get()
 	                .uri(url, countryName)
@@ -123,6 +129,8 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		
 		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
+		//TODO Heikki(error handling) make Web Client error handling!
+		
 		return webClient.post()
 				.uri(url)
 				.bodyValue(new ParamClass("NG"))
@@ -143,6 +151,8 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	public Mono<CountryFlagImageInfoResponseDto> getCountyWithWithFlagUrlByGet(String countryName) {
 		
 		String url = countriesNowUrl.concat("flag/images/q?country={countryName}");
+		
+		//TODO Heikki(error handling) make Web Client error handling!
 		
 		return webClient.get()
 	                .uri(url, countryName)
@@ -168,6 +178,8 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		
 		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
+		//TODO Heikki(error handling) make Web Client error handling!
+		
 		return webClient.post()
 				.uri(url)
 				.bodyValue(new ParamClass("nigeria"))
@@ -187,6 +199,8 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	public Mono<CountryCapitalInfoResponseDto> getCountyWithCapitalByGet(String countryName) {
 
 	String url = countriesNowUrl.concat("capital/q?country={countryName}");
+	
+	//TODO Heikki(error handling) make Web Client error handling!
 	
 	 return webClient.get()
                .uri(url, countryName)

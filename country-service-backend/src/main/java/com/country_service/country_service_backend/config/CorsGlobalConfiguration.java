@@ -7,6 +7,7 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 /*
  * Added Global CORS for now since dealing with REST API calls. This needs to be re-thinked, if deployed other than development environment!
+ * This is for Spring WebFlux CORS, there is different for Spring MVC CORS. 
  * https://www.baeldung.com/spring-webflux-cors 
  */
 
@@ -16,6 +17,6 @@ public class CorsGlobalConfiguration implements WebFluxConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry corsRegistry) {
-        corsRegistry.addMapping("/**");
+        corsRegistry.addMapping("/**").allowedOrigins("*");
     }
 }

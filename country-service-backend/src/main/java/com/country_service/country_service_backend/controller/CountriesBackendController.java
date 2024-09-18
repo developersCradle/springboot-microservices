@@ -1,7 +1,6 @@
 package com.country_service.country_service_backend.controller;
 
-import java.util.List;
-
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,14 +31,18 @@ public class CountriesBackendController {
 
     
 	@GetMapping("/")
-    public Mono<Countries> getAllCountries( ) {
-        return countriesService.getCountries();
+    public Mono<ResponseEntity<Countries>> getAllCountries( ) {
+        return countriesService.getCountries()
+        		.map(ResponseEntity.ok()::body).log(); // If message was OK, put body into inside to the ResponseEntity. With method reference.
     }
     
 
     @GetMapping("/{nameOfCountry}")
-    public Mono<Country> getInformationAboutCountry(@PathVariable String nameOfCountry) {
-    	return countriesService.getInformationAboutCountry(nameOfCountry);
+    public Mono<ResponseEntity<Country>> getInformationAboutCountry(@PathVariable String nameOfCountry) {
+    	return countriesService.getInformationAboutCountry(nameOfCountry)
+    	        .map(country -> { // If message was OK, put body into inside to the ResponseEntity. Same, but with traditional way.
+    			return ResponseEntity.ok().body(country);
+    		}).log();
     }
 
     // TODO(Heikki, StreamAPI) Try to make using SSE a  streaming end-point. Experiment.

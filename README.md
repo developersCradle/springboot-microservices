@@ -71,6 +71,17 @@ You get bonus points if:
 
 - Domain classes represents classes inside business logic.
 - DTO classes represents REST API and are modeled using `countriesnow.space` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing. I chose not make DTO classes as reusable as possible, every DTO is unique.
+- I have decided to use **ResponseEntity** from **Controller** class. [ReadMore](https://www.baeldung.com/spring-response-entity).
+
+> While **ResponseEntity** is very powerful, we shouldn’t overuse it. In simple cases, there are other options that satisfy our needs and they result in much cleaner code.
+
+# How to run!
+
+Get the repository.
+
+```bash
+git clone https://github.com/developersCradle/springboot-microservices.git
+```
 
 # Front end.
 
@@ -88,12 +99,6 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 
 ## How to run the back end.
 
-Get the repository.
-
-```bash
-git clone https://github.com/developersCradle/springboot-microservices.git
-```
-
 # Docker way.
 
 Just start the containers by running the following command:
@@ -105,7 +110,7 @@ docker compose up
 # Maven.
 
 ```bash
-
+Cool mvn command here!
 ```
 
 # Anomalies 🔎👀.
@@ -116,12 +121,11 @@ docker compose up
 - I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **PostMan**, but not for **ReactorNetty**.
 
 - Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **ReactorNetty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
-    - I Noticed the only difference mainly was headers. Left picture from **ReactorNetty** request and right from **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty** so it would work, but my luck failed. 
+    - I Noticed the only difference mainly was headers. Upper picture from **ReactorNetty** request and below it is from **PostMan**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **ReactorNetty** so it would work, but my luck failed. 
 
-<p id="error" align="center">
-    <img src="doneFromNettyHeaders.PNG" style="float:left; margin-right:10px;" width="500"  height="100">
-    <img src="doneFromPostManHeaders.PNG" style="float:left;" width="500" height="100">
-</p>
+<img src="doneFromNettyHeaders.PNG" width="500"  height="300">
+
+<img src="doneFromPostManHeaders.PNG" width="500" height="300">
 
 - Due to the inspections how PostMan had it working with this API. It had following settings `Accept: */*`. 
 

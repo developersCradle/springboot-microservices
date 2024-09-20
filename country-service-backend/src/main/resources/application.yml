@@ -1,6 +1,12 @@
 # We are making this configuration here, because if there would be more environments for this microservice to be ran on it would be easier for uss. Also for better manage the API versioning.
 spring:
+    profiles:
+        active: local
     application:
         name: country-service-backend
 restClient:
     countriesNowUrl: https://countriesnow.space/api/v0.1/countries/
+---
+# different env non-pod
+---
+# different env prod

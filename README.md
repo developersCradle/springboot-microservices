@@ -70,7 +70,10 @@ You get bonus points if:
     - If this microservice would ran in different environment, it would pick up appropriate configurations. 
 
 - Domain classes represents classes inside business logic.
-- DTO classes represents REST API and are modeled using `countriesnow.space` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing. I chose not make DTO classes as reusable as possible, every DTO is unique.
+- DTO classes represents REST API and are modeled using `countriesnow.space` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing. I chose not make DTO classes as reusable as possible, every DTO is unique. [ReadMore](https://www.baeldung.com/java-dto-pattern#common-mistakes).
+
+> We also want to avoid trying to use a single class for many scenarios. 
+
 - I have decided to use **ResponseEntity** in **Controller** class. [ReadMore](https://www.baeldung.com/spring-response-entity).
 
 > While **ResponseEntity** is very powerful, we shouldn’t overuse it. In simple cases, there are other options that satisfy our needs and they result in much cleaner code.
@@ -78,8 +81,17 @@ You get bonus points if:
 - We are making tests!
     - **Unit Tests**:
         - For bean validation.
+        - For Controller end points.
     - **Integration Tests**:
-        - Todo
+        - **WebTestClient** 
+            - Inside Spring application.
+        - **WireMock**
+            - For testing external APIs.
+
+- API versioning:
+    - ✅**URI Path Versioning**✅, were chosen for its popularity.
+    - ❌**Query Parameter Versioning**❌.
+    - ❌**Header Versioning**❌.
 
 # How to run!
 
@@ -88,6 +100,16 @@ Get the repository.
 ```bash
 git clone https://github.com/developersCradle/springboot-microservices.git
 ```
+
+
+# Docker way (Preferred!).
+
+Just start the containers by running the following command:
+
+```bash
+docker compose up
+```
+- ♻️ **Under progress** ♻️, for now start front end and back end **separately**!
 
 # Front end.
 
@@ -99,25 +121,68 @@ git clone https://github.com/developersCradle/springboot-microservices.git
 
 ## How to run the front end.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```bash
+ cd country-service-front
+ ng serve
+```
 
 # Back end.
 
 ## How to run the back end.
 
-# Docker way.
-
-Just start the containers by running the following command:
-
-```bash
-docker compose up
-```
-
 # Maven.
 
 ```bash
-Cool mvn command here!
+ cd country-service-backend
+ ./mvnw spring-boot::run
 ```
+
+<details>
+<summary id="be api documentation">Back end <b>API documentation</b> </summary>
+
+
+### **GET /countries/v1/**
+   - **Description**: Retrieves all available country information from the service.
+   - **HTTP Method**: `GET`
+   - **Response**:
+     - If successful, it returns a `Mono<ResponseEntity<Countries>>` with a list of countries.
+     - If no data is found, it returns a `404 Not Found` status.
+   - **Example Response**:
+     ```json
+     {
+           "countries": [
+                             {
+                                       "name": "Afghanistan",
+                                       "country_code": "AF"
+                             },
+                             ...
+                   ]
+     }
+     ```
+
+### **GET /countries/v1/{nameOfCountry}**
+   - **Description**: Retrieves detailed information about a specific country by its name.
+   - **HTTP Method**: `GET`
+   - **Path Variable**:
+     - `nameOfCountry`: A non-blank string representing the name of the country to retrieve information about. 
+   - **Response**:
+     - If the country is found, it returns a `Mono<ResponseEntity<Country>>` with the country's details.
+     - If the country is not found, it returns a `404 Not Found` status.
+   - **Example Request**: 
+     ```
+     GET /countries/v1/Afghanistan
+     ```
+   - **Example Response**:
+     ```json
+        {
+            "name": "Afghanistan",
+            "country_code": "AF",
+            "capital": "Kabul",
+            "population": 37172386,
+            "flag_file_url": "https://upload.wikimedia.org/wikipedia/commons/5/5f/Flag_of_Afghanistan_%28Colored_Emblem%29.svg"
+        }
+     ```
+</details>
 
 # Anomalies 🔎👀.
 
@@ -127,7 +192,7 @@ Cool mvn command here!
 - I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **Postman**, but not for **Reactor Netty**.
 
 - Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **Reactor Netty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
-    - I Noticed the only difference mainly was headers. Upper picture from **Reactor Netty** request and below it is from **Postman**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **Reactor Netty** so it would work, but my luck failed. 
+    - I noticed the only difference mainly was headers. Upper picture from **Reactor Netty** request and below it is from **Postman**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **Reactor Netty** so it would work, but my luck failed. 
 
 <img src="doneFromNettyHeaders.PNG" width="500"  height="300">
 
@@ -135,7 +200,7 @@ Cool mvn command here!
 
 - Due to the inspections how Postman had it working with this API. It had following settings `Accept: */*`. 
 
-- Luckily returning `Mono<String>` from **POST** function and setting `@Data` with POST param DTO class with the changing **Reactor Netty** headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
+- Luckily returning `Mono<String>` from **POST** function and setting `@Data` for DTO class which was for serving as param class. Also i changed **Reactor Netty** headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
 
 ```
     @Bean
@@ -146,7 +211,7 @@ Cool mvn command here!
     }
 ```
 
-- With DTO class.
+- With DTO param class.
 
 ```
 @Data
@@ -155,6 +220,7 @@ public class ParamClass {
 	String country;
 }
 ```
+
 - Below positive surprise. I was not crazy and seeing things.
 
 <img  src="positveSupriseAboutPOSTapi.PNG" alt="alt text" width="600"/>

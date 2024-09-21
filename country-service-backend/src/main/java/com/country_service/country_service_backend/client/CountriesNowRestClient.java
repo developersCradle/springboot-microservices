@@ -15,13 +15,13 @@ public interface CountriesNowRestClient {
 	Flux<CountryIsoResponseDto> getCountriesWithIsoByGet();
 
 	@Deprecated
-	Mono<String> getCountyWithPopulationByPost(String countryName);
+	Mono<String> getCountryWithPopulationByPost(String countryName);
 	/* Flux since REST endpoint returns multiple values, even thought its wrapped in Mono */
 	Flux<CountryPopulationSingleCountResponseDto> getCountyWithPopulationByGet(String countryName);
 	
 	@Deprecated
-	Mono<String> getCountyWithWithFlagUrlByPost(String countryIso2);
-	Mono<CountryFlagImageInfoResponseDto> getCountyWithWithFlagUrlByGet(String countryName);
+	Mono<String> getCountyWithFlagUrlByPost(String countryIso2);
+	Mono<CountryFlagImageInfoResponseDto> getCountryWithFlagUrlByGet(String countryName);
 	
 	@Deprecated
 	Mono<String> getCountyWithCapitalByPost(String countryName);

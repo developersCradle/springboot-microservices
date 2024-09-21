@@ -3,7 +3,10 @@ package com.country_service.country_service_backend.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import reactor.netty.http.client.HttpClient;
 
 @Configuration
 public class WebClientConfig {
@@ -19,7 +22,19 @@ public class WebClientConfig {
 	  @Bean
 	   public WebClient webClient(WebClient.Builder builder) {
 	        return builder.defaultHeader(
-	        		"Accept", MediaType.ALL_VALUE)
+	        		"Accept", MediaType.ALL_VALUE
+	        		).clientConnector(new ReactorClientHttpConnector(HttpClient.newConnection().followRedirect(true)))
 	        		.build();
 	    }
+	  
+	  
+	  /*
+	   * return builder.defaultHeader(
+	        		"Accept", MediaType.ALL_VALUE
+	        		).clientConnector(new ReactorClientHttpConnector(HttpClient.newConnection().followRedirect(true)))
+	        		.build();
+	        		
+	  TODO(redirect) if time figure out how to configure redirect.
+	   */
+	  
 }

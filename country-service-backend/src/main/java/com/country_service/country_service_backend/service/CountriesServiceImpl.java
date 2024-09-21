@@ -50,7 +50,7 @@ public class CountriesServiceImpl implements CountriesService {
 	public Mono<Country> getInformationAboutCountry(String countryName) {
 		
 		 Mono<CountryPopulationSingleCountResponseDto> populationMono = countriesNowRestClient.getCountyWithPopulationByGet(countryName).last(); // for latest population from API.
-		 Mono<CountryFlagImageInfoResponseDto> flagMono = countriesNowRestClient.getCountyWithWithFlagUrlByGet(countryName); // for flag URL from API.
+		 Mono<CountryFlagImageInfoResponseDto> flagMono = countriesNowRestClient.getCountryWithFlagUrlByGet(countryName); // for flag URL from API.
 		 Mono<CountryCapitalInfoResponseDto> capitalMono = countriesNowRestClient.getCountyWithCapitalByGet(countryName); // for getting capital from API.
 		
 		    return Mono.zip(populationMono, flagMono, capitalMono)
@@ -72,7 +72,7 @@ public class CountriesServiceImpl implements CountriesService {
 	@Override
 	public Mono<?> getBetaStuff() {
 		
-		return countriesNowRestClient.getCountyWithPopulationByPost("Finland");
+		return countriesNowRestClient.getCountryWithPopulationByPost("Finland");
 	}
 
 }

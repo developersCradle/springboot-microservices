@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import org.springframework.http.HttpStatus;
 import com.country_service.country_service_backend.dto.countries.capital.CountryCapitalInfoResponseDto;
 import com.country_service.country_service_backend.dto.countries.capital.CountryCapitalResponseDto;
 import com.country_service.country_service_backend.dto.countries.flag.images.CountryFlagImageInfoResponseDto;
@@ -12,6 +13,8 @@ import com.country_service.country_service_backend.dto.countries.iso.CountriesIs
 import com.country_service.country_service_backend.dto.countries.iso.CountryIsoResponseDto;
 import com.country_service.country_service_backend.dto.countries.population.CountriesPopulationResponseDto;
 import com.country_service.country_service_backend.dto.countries.population.CountryPopulationSingleCountResponseDto;
+import com.country_service.country_service_backend.exceptionhandler.CountriesNowClientException;
+import com.country_service.country_service_backend.exceptionhandler.CountriesNowServerException;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -49,17 +52,42 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		
 		String url = countriesNowUrl.concat("iso");
 		
-		//TODO Heikki(error handling) make Web Client error handling!
 		
 		 return webClient.get()
 	                .uri(url)
 	                .retrieve()
+	                .onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
+	                	
+	                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+	                	
+	                	// Error will be wrapped in Mono.
+	                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
+							return Mono.error(new CountriesNowClientException("There is no Countries with iso code. ", clientResponse.statusCode().value()));
+						}
+	                
+	                 // Get the error message with bodyToMono and flatMap.
+	                 return clientResponse.bodyToMono(String.class) // Error code not found.
+	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
+	                				 responseMessage, clientResponse.statusCode().value()
+	                				 )));
+	                })
+	                .onStatus(clientResponse -> clientResponse.is5xxServerError(), clientResponse -> {
+	                	
+	                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+	                	
+	                 // Get the error message with bodyToMono and flatMap.
+	                 return clientResponse.bodyToMono(String.class) // Error code not found.
+	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowServerException( 
+	                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
+	                })
 	                .bodyToMono(CountriesIsoResponseDto.class) // Map the entire response to a Mono.
 	                .flatMapMany(countriesIsoDto -> Flux.fromIterable(countriesIsoDto.getData())) // We make this Flux here, since there is many elements and helps to process this later.
 	                .log();
 	}
 
 	
+	
+
 	
 	
 	/*
@@ -73,18 +101,40 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 
 	@Deprecated
 	@Override
-	public Mono<String> getCountyWithPopulationByPost(String countryName) {
+	public Mono<String> getCountryWithPopulationByPost(String countryName) {
 		
 		String url = countriesNowUrl.concat("population");
 
 //		 url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
-		//TODO Heikki(error handling) make Web Client error handling!
-		
 		return webClient.post()
 				.uri(url)
 				.bodyValue(new ParamClass("Finland"))
 				.retrieve()
+				.onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
+                	
+                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+                	
+                	// Error will be wrapped in Mono.
+                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
+						return Mono.error(new CountriesNowClientException("There is no Country with population. ", clientResponse.statusCode().value()));
+					}
+                
+                 // Get the error message with bodyToMono and flatMap.
+                 return clientResponse.bodyToMono(String.class) // Error code not found.
+                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
+                				 responseMessage, clientResponse.statusCode().value()
+                				 )));
+                })
+                .onStatus(clientResponse -> clientResponse.is5xxServerError(), clientResponse -> {
+                	
+                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+                	
+                 // Get the error message with bodyToMono and flatMap.
+                 return clientResponse.bodyToMono(String.class) // Error code not found.
+                		 .flatMap(responseMessage -> Mono.error( new CountriesNowServerException( 
+                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
+                })
 				.bodyToMono(String.class)
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithPopulationByPost: " + result));
 		
@@ -102,11 +152,33 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		
 		String url = countriesNowUrl.concat("population/q?country={countryName}");
 		
-		//TODO Heikki(error handling) make Web Client error handling!
-		
 		 return webClient.get()
 	                .uri(url, countryName)
 	                .retrieve()
+	                .onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
+	                	
+	                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+	                	
+	                	// Error will be wrapped in Mono.
+	                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
+							return Mono.error(new CountriesNowClientException("There is no Country with population. ", clientResponse.statusCode().value()));
+						}
+	                
+	                 // Get the error message with bodyToMono and flatMap.
+	                 return clientResponse.bodyToMono(String.class) // Error code not found.
+	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
+	                				 responseMessage, clientResponse.statusCode().value()
+	                				 )));
+	                })
+	                .onStatus(clientResponse -> clientResponse.is5xxServerError(), clientResponse -> {
+	                	
+	                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+	                	
+	                 // Get the error message with bodyToMono and flatMap.
+	                 return clientResponse.bodyToMono(String.class) // Error code not found.
+	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowServerException( 
+	                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
+	                })
 	                .bodyToMono(CountriesPopulationResponseDto.class) // Map the entire response to a Mono.
 		 			.flatMapMany(response -> Flux.fromIterable(response.getData().getPopulationCounts())); // Get only population counts.
 		 			};
@@ -123,20 +195,42 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		 			
 	@Deprecated	 			
 	@Override
-	public Mono<String> getCountyWithWithFlagUrlByPost(String countryIso2) {
+	public Mono<String> getCountyWithFlagUrlByPost(String countryIso2) {
 		
 		String url = countriesNowUrl.concat("/flag/images");
 		
 		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
-		//TODO Heikki(error handling) make Web Client error handling!
-		
 		return webClient.post()
 				.uri(url)
 				.bodyValue(new ParamClass("NG"))
 				.retrieve()
+				.onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
+                	
+                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+                	
+                	// Error will be wrapped in Mono.
+                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
+						return Mono.error(new CountriesNowClientException("There is no Country with flag url. ", clientResponse.statusCode().value()));
+					}
+                
+                 // Get the error message with bodyToMono and flatMap.
+                 return clientResponse.bodyToMono(String.class) // Error code not found.
+                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
+                				 responseMessage, clientResponse.statusCode().value()
+                				 )));
+                })
+                .onStatus(clientResponse -> clientResponse.is5xxServerError(), clientResponse -> {
+                	
+                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+                	
+                 // Get the error message with bodyToMono and flatMap.
+                 return clientResponse.bodyToMono(String.class) // Error code not found.
+                		 .flatMap(responseMessage -> Mono.error( new CountriesNowServerException( 
+                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
+                })
 				.bodyToMono(String.class)
-				.doOnSuccess(result -> System.out.println("Response from getCountyWithWithFlagUrlByPost: " + result));
+				.doOnSuccess(result -> System.out.println("Response from getCountyWithFlagUrlByPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
 		
@@ -148,15 +242,37 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	 */
 
 	@Override
-	public Mono<CountryFlagImageInfoResponseDto> getCountyWithWithFlagUrlByGet(String countryName) {
+	public Mono<CountryFlagImageInfoResponseDto> getCountryWithFlagUrlByGet(String countryName) {
 		
 		String url = countriesNowUrl.concat("flag/images/q?country={countryName}");
-		
-		//TODO Heikki(error handling) make Web Client error handling!
 		
 		return webClient.get()
 	                .uri(url, countryName)
 	                .retrieve()
+	                .onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
+	                	
+	                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+	                	
+	                	// Error will be wrapped in Mono.
+	                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
+							return Mono.error(new CountriesNowClientException("There is no Country with flag url. ", clientResponse.statusCode().value()));
+						}
+	                
+	                 // Get the error message with bodyToMono and flatMap.
+	                 return clientResponse.bodyToMono(String.class) // Error code not found.
+	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
+	                				 responseMessage, clientResponse.statusCode().value()
+	                				 )));
+	                })
+	                .onStatus(clientResponse -> clientResponse.is5xxServerError(), clientResponse -> {
+	                	
+	                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+	                	
+	                 // Get the error message with bodyToMono and flatMap.
+	                 return clientResponse.bodyToMono(String.class) // Error code not found.
+	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowServerException( 
+	                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
+	                })
 	                .bodyToMono(CountryFlagImageResponseDto.class)
 	                .flatMap(response -> Mono.just(response.getData()));
 		 }
@@ -178,12 +294,34 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		
 		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
-		//TODO Heikki(error handling) make Web Client error handling!
-		
 		return webClient.post()
 				.uri(url)
 				.bodyValue(new ParamClass("nigeria"))
 				.retrieve()
+				.onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
+                	
+                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+                	
+                	// Error will be wrapped in Mono.
+                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
+						return Mono.error(new CountriesNowClientException("There is no Country with capital. ", clientResponse.statusCode().value()));
+					}
+                
+                 // Get the error message with bodyToMono and flatMap.
+                 return clientResponse.bodyToMono(String.class) // Error code not found.
+                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
+                				 responseMessage, clientResponse.statusCode().value()
+                				 )));
+                })
+                .onStatus(clientResponse -> clientResponse.is5xxServerError(), clientResponse -> {
+                	
+                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+                	
+                 // Get the error message with bodyToMono and flatMap.
+                 return clientResponse.bodyToMono(String.class) // Error code not found.
+                		 .flatMap(responseMessage -> Mono.error( new CountriesNowServerException( 
+                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
+                })
 				.bodyToMono(String.class)
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithCapitalPost: " + result));
 		
@@ -200,11 +338,33 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 
 	String url = countriesNowUrl.concat("capital/q?country={countryName}");
 	
-	//TODO Heikki(error handling) make Web Client error handling!
-	
 	 return webClient.get()
                .uri(url, countryName)
                .retrieve()
+               .onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
+               	
+               	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+               	
+               	// Error will be wrapped in Mono.
+               	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
+						return Mono.error(new CountriesNowClientException("There is no Country with capital. ", clientResponse.statusCode().value()));
+					}
+               
+                // Get the error message with bodyToMono and flatMap.
+                return clientResponse.bodyToMono(String.class) // Error code not found.
+               		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
+               				 responseMessage, clientResponse.statusCode().value()
+               				 )));
+               })
+               .onStatus(clientResponse -> clientResponse.is5xxServerError(), clientResponse -> {
+               	
+               	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+               	
+                // Get the error message with bodyToMono and flatMap.
+                return clientResponse.bodyToMono(String.class) // Error code not found.
+               		 .flatMap(responseMessage -> Mono.error( new CountriesNowServerException( 
+               				 "Server Exception in CountriesNowRestClient " + responseMessage)));
+               })
                .bodyToMono(CountryCapitalResponseDto.class) // Map the entire response to a Mono.
                .flatMap(response -> Mono.just(response.getData())); // Get only capital information.
 	 };

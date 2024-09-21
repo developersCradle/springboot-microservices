@@ -41,7 +41,6 @@ public class CountriesBackendController {
     }
 	
 	//TODO (Heikki, Validation) add bean validation for @PathVariable, not supported directly.
-	
     @GetMapping("/{nameOfCountry}")
     public Mono<ResponseEntity<Country>> getInformationAboutCountry(@PathVariable @NotBlank(message = "error in name") String nameOfCountry) {
     	return countriesService.getInformationAboutCountry(nameOfCountry)

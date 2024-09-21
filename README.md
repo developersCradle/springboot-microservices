@@ -85,8 +85,8 @@ You get bonus points if:
     - **Integration Tests**:
         - **WebTestClient** 
             - Inside Spring application.
-        - **WireMock**
-            - For testing external APIs.
+        - **WireMock** 
+            - For testing external APIs. In progress ♻️ **Could not get this working, for now** ♻️.
 
 - API versioning:
     - ✅**URI Path Versioning**✅, were chosen for its popularity.
@@ -130,7 +130,7 @@ docker compose up
 
 ## How to run the back end.
 
-# Maven.
+## Maven.
 
 ```bash
  cd country-service-backend

@@ -184,6 +184,9 @@ docker compose up
      ```
 </details>
 
+- All **API**:s are implementing **resilience** with **retrying pattern**.
+    - Retry only **5xx** errors.
+
 # Anomalies 🔎👀.
 
 <details>

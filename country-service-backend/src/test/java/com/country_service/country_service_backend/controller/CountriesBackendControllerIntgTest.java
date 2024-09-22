@@ -33,7 +33,7 @@ public class CountriesBackendControllerIntgTest {
 	
 	private String COUNTRIES_BASE_URL = "/countries/v1/"; // For Controller base end point.
 	
-	
+	   
 	
 	/*
 	 * Test getInformationAboutCountry with real API behind for OK.
@@ -64,9 +64,6 @@ public class CountriesBackendControllerIntgTest {
                 assertEquals(5515525, country.getPopulation());
                 assertEquals("https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Finland.svg", country.getFlagFileUrl());
     	    });
-        
-        
-        
     }
 	
 
@@ -99,11 +96,10 @@ public class CountriesBackendControllerIntgTest {
     	 
 	
 	
-	
-	
-	
-	
-	
+	/*
+	 * Add here to test about 4xx and 5xx error, that re-try attempts! Freaking WireMock!
+	 * With backoff mechanism!
+	 */
 	
 	/*
 	 * Experiment, cannot get WireMock working to test disconnections or other network errors.

@@ -23,7 +23,7 @@ public class WebClientConfig {
 	   public WebClient webClient(WebClient.Builder builder) {
 	        return builder.defaultHeader(
 	        		"Accept", MediaType.ALL_VALUE
-	        		).clientConnector(new ReactorClientHttpConnector(HttpClient.newConnection().followRedirect(true)))
+	        		)
 	        		.build();
 	    }
 	  

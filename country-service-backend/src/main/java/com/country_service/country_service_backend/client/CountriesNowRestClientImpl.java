@@ -15,6 +15,7 @@ import com.country_service.country_service_backend.dto.countries.population.Coun
 import com.country_service.country_service_backend.dto.countries.population.CountryPopulationSingleCountResponseDto;
 import com.country_service.country_service_backend.exceptionhandler.CountriesNowClientException;
 import com.country_service.country_service_backend.exceptionhandler.CountriesNowServerException;
+import com.country_service.country_service_backend.util.RetryUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -82,6 +83,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	                })
 	                .bodyToMono(CountriesIsoResponseDto.class) // Map the entire response to a Mono.
 	                .flatMapMany(countriesIsoDto -> Flux.fromIterable(countriesIsoDto.getData())) // We make this Flux here, since there is many elements and helps to process this later.
+	                .retryWhen(RetryUtil.retrySpec())
 	                .log();
 	}
 
@@ -136,6 +138,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
                 				 "Server Exception in CountriesNowRestClient " + responseMessage)));
                 })
 				.bodyToMono(String.class)
+				.retryWhen(RetryUtil.retrySpec())
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithPopulationByPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
@@ -180,8 +183,10 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
 	                })
 	                .bodyToMono(CountriesPopulationResponseDto.class) // Map the entire response to a Mono.
+	                .retryWhen(RetryUtil.retrySpec())
 		 			.flatMapMany(response -> Flux.fromIterable(response.getData().getPopulationCounts())); // Get only population counts.
 		 			};
+		 			
 		 			
 
 	/*
@@ -230,6 +235,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
                 				 "Server Exception in CountriesNowRestClient " + responseMessage)));
                 })
 				.bodyToMono(String.class)
+				.retryWhen(RetryUtil.retrySpec())
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithFlagUrlByPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
@@ -274,6 +280,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
 	                })
 	                .bodyToMono(CountryFlagImageResponseDto.class)
+	                .retryWhen(RetryUtil.retrySpec())
 	                .flatMap(response -> Mono.just(response.getData()));
 		 }
 
@@ -323,6 +330,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
                 				 "Server Exception in CountriesNowRestClient " + responseMessage)));
                 })
 				.bodyToMono(String.class)
+				.retryWhen(RetryUtil.retrySpec())
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithCapitalPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
@@ -366,7 +374,9 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
                })
                .bodyToMono(CountryCapitalResponseDto.class) // Map the entire response to a Mono.
+               .retryWhen(RetryUtil.retrySpec())
                .flatMap(response -> Mono.just(response.getData())); // Get only capital information.
+	 			
 	 };
 		
 }

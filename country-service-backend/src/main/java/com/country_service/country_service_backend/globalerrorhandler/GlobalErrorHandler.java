@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.country_service.country_service_backend.exceptionhandler.CountriesNowClientException;
 
@@ -16,15 +17,31 @@ public class GlobalErrorHandler {
     @ExceptionHandler
     public ResponseEntity<String> handleClientException(CountriesNowClientException exception) { // Handling CountriesNowClientException exception.
 
-        log.error("Exception Caught in handleClientException: {}", exception.getMessage());
-        return ResponseEntity.status(exception.getStatusCode()).body(exception.getMessage()); // We can map error messages dynamically.
+        log.error("Exception Caught in handleClientException: {}", exception.getMessage(), exception);
+        
+        return ResponseEntity.status(exception.getStatusCode()).body(exception.getMessage()); // We can map error messages  here dynamically, like such
     }
+
 
     @ExceptionHandler
-    public ResponseEntity<String> handleRuntimeException(RuntimeException exception) { // Handling RuntimeException exception.
+    public ResponseEntity<String> handleRuntimeException(ResponseStatusException exception) { // Handling ResponseStatusException exception, meaning if navigate address where in no end point.
 
-        log.error("Exception Caught in handleClientException: {}", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());
+    	log.error("Runtime Exception Caught: {}", exception.getMessage(), exception);
+    	
+        return ResponseEntity.status(exception.getStatusCode()).body(exception.getMessage());  // We can map error messages  here dynamically, like such
+        
     }
+
+    
+    @ExceptionHandler
+    public ResponseEntity<String> handleRuntimeException(RuntimeException exception) { // Handling RuntimeException exception, meaning anything else will be mapped here.
+    	 
+    	log.error("Runtime Exception Caught: {}", exception.getMessage(), exception);
+    	
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(exception.getMessage());  // We can map error messages  here dynamically, like such
+        
+    }
+    
+    // Add here more specific exceptions if there will be in future.
 	
 }

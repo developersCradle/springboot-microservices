@@ -10,10 +10,18 @@ import { Country } from '../types/Country';
 export class BodyComponent implements OnInit {
 
   countries : Country[] = [];
-  constructor(private cs : CountryService) { }
+
+  constructor(private cs: CountryService) { }
 
   ngOnInit(): void {
-    this.countries = this.cs.getAllCountries();
+    this.cs.getAllCountries().subscribe(
+      (data) => {
+        console.log(data);
+        this.countries = data;
+      },
+      (error) => {
+        console.error('Error fetching countries:', error);
+      }
+    );
   }
-
 }

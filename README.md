@@ -80,18 +80,21 @@ You get bonus points if:
 
 - We are making tests!
     - **Unit Tests**:
-        - For bean validation.
+        - For Bean Validation.
         - For Controller end points.
     - **Integration Tests**:
-        - **WebTestClient** 
+        - [![WebTestClient](https://img.shields.io/badge/WebTestClient-grey?style=for-the-badge&logo=spring)](https://docs.spring.io/spring-framework/reference/testing/webtestclient.html).
             - Inside Spring application.
-        - **WireMock** 
+        - [![WireMock](https://img.shields.io/badge/WireMock%20-grey?style=for-the-badge)](https://wiremock.org/).
             - For testing external APIs. In progress ♻️ **Could not get this working, for now** ♻️.
 
 - API versioning:
     - ✅**URI Path Versioning**✅, were chosen for its popularity.
     - ❌**Query Parameter Versioning**❌.
     - ❌**Header Versioning**❌.
+
+- All **API:s** are implementing **resilience** with **retrying pattern**.
+    - Retry only **5xx** errors.
 
 # How to run!
 
@@ -183,9 +186,6 @@ docker compose up
         }
      ```
 </details>
-
-- All **API**:s are implementing **resilience** with **retrying pattern**.
-    - Retry only **5xx** errors.
 
 # Anomalies 🔎👀.
 

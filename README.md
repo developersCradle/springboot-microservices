@@ -70,6 +70,7 @@ You get bonus points if:
     - If this microservice would ran in different environment, it would pick up appropriate configurations. 
 
 - Domain classes represents classes inside business logic.
+
 - DTO classes represents REST API and are modeled using `countriesnow.space` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing. I chose not make DTO classes as reusable as possible, every DTO is unique. [ReadMore](https://www.baeldung.com/java-dto-pattern#common-mistakes).
 
 > We also want to avoid trying to use a single class for many scenarios. 
@@ -77,7 +78,6 @@ You get bonus points if:
 - I have decided to use **ResponseEntity** in **Controller** class. [ReadMore](https://www.baeldung.com/spring-response-entity).
 
 > While **ResponseEntity** is very powerful, we shouldn’t overuse it. In simple cases, there are other options that satisfy our needs and they result in much cleaner code.
-
 - We are making tests!
     - **Unit Tests**:
         - For Bean Validation.
@@ -96,6 +96,14 @@ You get bonus points if:
 - All **API:s** are implementing **resilience** with **retrying pattern**.
     - Retry only **5xx** errors.
 
+- Country letter representation "**two letters**" [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) will be used, since it was in specifications.
+
+# Not sure things ⚠️👀?
+
+- I am not sure that, am i  utilizing the  **.subscribe** rightly. Like in this example, i don't have any of such in code directly `.subscribe(this::someFunction, this::someFunctionIfErrorHappened);`. My service is simple passing data to front end by means of **Project Reactor**. Well, yes if there would be db attached, then this would be suitable approach, but i didn't come any use for such case.
+
+- Other thing is the **Subscriptions** itself, i should make SSE end point to back end and Angular app would listen this stream for new countries? Now its just service for REST api call in world of **Project Reactor**.
+
 # How to run!
 
 Get the repository.
@@ -104,15 +112,19 @@ Get the repository.
 git clone https://github.com/developersCradle/springboot-microservices.git
 ```
 
+# Docker way (Preferred!). ⚠️ Start separately fe and be for now! ⚠️
 
-# Docker way (Preferred!).
+-  Compile your Maven project, run tests, and package it into a JAR.
 
-Just start the containers by running the following command:
+```bash
+./mvnw package
+```
+
+ ♻️ **Under progress** ♻️ This could possible in one command leveraging a multi-step process. For now just start the containers by running the following command: 
 
 ```bash
 docker compose up
 ```
-- ♻️ **Under progress** ♻️, for now start front end and back end **separately**!
 
 # Front end.
 
@@ -126,8 +138,11 @@ docker compose up
 
 ```bash
  cd country-service-front
+ npm install
  ng serve
 ```
+
+- Check console for website! Normally its `http://localhost:4200/`.
 
 # Back end.
 
@@ -139,6 +154,15 @@ docker compose up
  cd country-service-backend
  ./mvnw spring-boot::run
 ```
+ - To check backend separately. Try `http://localhost:8080/countries/v1/`. For other endpoints check documentation.
+## Maven(backup way)
+
+```bash
+cd country-service-backend
+./mvnw package
+java -jar target/country-service-backend-0.0.1-SNAPSHOT.jar 
+```
+
 
 <details>
 <summary id="be api documentation">Back end <b>API documentation</b> </summary>

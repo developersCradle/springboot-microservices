@@ -13,8 +13,8 @@ import com.country_service.country_service_backend.dto.countries.iso.CountriesIs
 import com.country_service.country_service_backend.dto.countries.iso.CountryIsoResponseDto;
 import com.country_service.country_service_backend.dto.countries.population.CountriesPopulationResponseDto;
 import com.country_service.country_service_backend.dto.countries.population.CountryPopulationSingleCountResponseDto;
-import com.country_service.country_service_backend.exceptionhandler.CountriesNowClientException;
-import com.country_service.country_service_backend.exceptionhandler.CountriesNowServerException;
+import com.country_service.country_service_backend.exception.CountriesNowClientException;
+import com.country_service.country_service_backend.exception.CountriesNowServerException;
 import com.country_service.country_service_backend.util.RetryUtil;
 
 import lombok.extern.slf4j.Slf4j;
@@ -79,12 +79,11 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	                 // Get the error message with bodyToMono and flatMap.
 	                 return clientResponse.bodyToMono(String.class) // Error code not found.
 	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowServerException( 
-	                				 "Server Exception in CountriesNowRestClient " + responseMessage)));
+	                			 "Server Exception in CountriesNowRestClient " + responseMessage)));
 	                })
 	                .bodyToMono(CountriesIsoResponseDto.class) // Map the entire response to a Mono.
 	                .flatMapMany(countriesIsoDto -> Flux.fromIterable(countriesIsoDto.getData())) // We make this Flux here, since there is many elements and helps to process this later.
-	                .retryWhen(RetryUtil.retrySpec())
-	                .log();
+	                .retryWhen(RetryUtil.retrySpec());
 	}
 
 	

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.country_service.country_service_backend.exceptionhandler.CountriesNowClientException;
+import com.country_service.country_service_backend.exception.CountriesNowClientException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,7 +24,7 @@ public class GlobalErrorHandler {
 
 
     @ExceptionHandler
-    public ResponseEntity<String> handleRuntimeException(ResponseStatusException exception) { // Handling ResponseStatusException exception, meaning if navigate address where in no end point.
+    public ResponseEntity<String> handleRuntimeException(ResponseStatusException exception) { // Handling ResponseStatusException exception, meaning if navigate address where is no end point mapping.
 
     	log.error("Runtime Exception Caught: {}", exception.getMessage(), exception);
     	

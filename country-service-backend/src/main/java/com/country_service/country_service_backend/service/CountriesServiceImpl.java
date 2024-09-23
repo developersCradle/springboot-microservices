@@ -60,7 +60,7 @@ public class CountriesServiceImpl implements CountriesService {
 		                CountryCapitalInfoResponseDto capitalDto = tuple.getT3();
 		                return new Country(
 		                		flagDto.getName(), // name of country.
-		                		flagDto.getIso2(), // country_code, Iso2 will be used, since it was the same format as in specifications.
+		                		flagDto.getIso2(), // country_code, Iso2 will be used, since it was the same format as in specifications. Specification ISO_3166-1_alpha-2
 		                		capitalDto.getCapital(), // capital         
 		                		populationDto.getValue(), // population, latest which comes from API
 		                		flagDto.getFlag() // URL to flag              

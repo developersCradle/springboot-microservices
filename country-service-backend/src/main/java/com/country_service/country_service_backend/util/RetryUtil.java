@@ -2,7 +2,7 @@ package com.country_service.country_service_backend.util;
 
 import java.time.Duration;
 
-import com.country_service.country_service_backend.exceptionhandler.CountriesNowServerException;
+import com.country_service.country_service_backend.exception.CountriesNowServerException;
 
 import reactor.core.Exceptions;
 import reactor.util.retry.Retry;

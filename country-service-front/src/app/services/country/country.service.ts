@@ -3,6 +3,7 @@ import { Countries } from 'src/app/types/Countries';
 import { Country } from 'src/app/types/Country';
 import { HttpClient } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { map, Observable } from 'rxjs';
 })
 export class CountryService {
 
-  private apiUrl = 'http://localhost:8080/countries/v1/'; //Find way to dynamically make this, example in docker compose file.
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {
   }

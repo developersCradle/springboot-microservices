@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  spring-app:
+    build:
+      context: ./country-service-backend  # Path to the folder where your backend Dockerfile is located.
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080" # Standard way to map, same port inside and outside.
+    environment:
+      SPRING_PROFILES_ACTIVE: local  # Set active Spring profile, this is default usually.
+    restart: always  # Should always restart if it stops, regardless of the exit status.
+
+  frontend:
+    build:
+      context: ./country-service-front  # Path to the folder where your Angular Dockerfile is located.
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"  # Exposing the Angular app on port 8081 and nginx exposing inside port 80.
+    depends_on:
+      - spring-app  # Front end waits for backend
+    restart: always # Should always restart if it stops, regardless of the exit status.
+
+
+
+
+

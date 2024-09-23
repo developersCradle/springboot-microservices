@@ -62,7 +62,7 @@ You get bonus points if:
     - ❌ **RestTemplate** ❌ Older way to make calls in Spring and synchronous. [RestTemplate](https://www.baeldung.com/rest-template).
     - ❌ **Feign Client** ❌ Also synchronous. [Feign Client](https://www.baeldung.com/spring-boot-feignclient-vs-webclient).
 - [![Netty](https://img.shields.io/badge/Netty-grey?style=for-the-badge&logo=googleearth&logoColor=FFFFFF)](https://projectreactor.io/docs/netty/1.1.21/reference/index.html).
-    - ✅**Netty**✅ is suited for Microservices Architecture, for its non-blocking I/O client-server nature.
+    - ✅**Netty**✅ is suited for Microservices Architecture, for its non-blocking I/O client-server nature. This for bank end.
 - [![Lombok](https://img.shields.io/badge/Lombok-green?style=for-the-badge)](https://docs.spring.io/spring-framework/reference/web/webflux.html). 
     - ✅**Lombok**✅ For reducing boilerplate code.
 
@@ -78,6 +78,7 @@ You get bonus points if:
 - I have decided to use **ResponseEntity** in **Controller** class. [ReadMore](https://www.baeldung.com/spring-response-entity).
 
 > While **ResponseEntity** is very powerful, we shouldn’t overuse it. In simple cases, there are other options that satisfy our needs and they result in much cleaner code.
+
 - We are making tests!
     - **Unit Tests**:
         - For Bean Validation.
@@ -86,7 +87,15 @@ You get bonus points if:
         - [![WebTestClient](https://img.shields.io/badge/WebTestClient-grey?style=for-the-badge&logo=spring)](https://docs.spring.io/spring-framework/reference/testing/webtestclient.html).
             - Inside Spring application.
         - [![WireMock](https://img.shields.io/badge/WireMock%20-grey?style=for-the-badge)](https://wiremock.org/).
-            - For testing external APIs. In progress ♻️ **Could not get this working, for now** ♻️.
+            - ✅**WireMock**✅ for testing external APIs. In progress ♻️ **Could not get this working, for now** ♻️.
+- [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/) 
+    - ✅**Docker**✅ for easy deployment. 
+
+- [![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)](#)
+    - ✅**Angular**✅  front end, because i like it!
+
+- [![nginx](https://img.shields.io/badge/nginx-grey?style=for-the-badge&logo=nginx)](https://nginx.org/en/)
+    - ✅**Nginx**✅ for hosting front end.
 
 - API versioning:
     - ✅**URI Path Versioning**✅, were chosen for its popularity.
@@ -97,6 +106,10 @@ You get bonus points if:
     - Retry only **5xx** errors.
 
 - Country letter representation "**two letters**" [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) will be used, since it was in specifications.
+
+### Prerequisites:
+- Lates java JDK is fine to run commands.
+- Latest Docker.
 
 # Not sure things ⚠️👀?
 
@@ -112,19 +125,18 @@ Get the repository.
 git clone https://github.com/developersCradle/springboot-microservices.git
 ```
 
-# Docker way (Preferred!). ⚠️ Start separately fe and be for now! ⚠️
+# Docker way (Preferred!).
 
--  Compile your Maven project, run tests, and package it into a JAR.
-
-```bash
-./mvnw package
-```
-
- ♻️ **Under progress** ♻️ This could possible in one command leveraging a multi-step process. For now just start the containers by running the following command: 
+For now just start the containers by running the following command: 
 
 ```bash
-docker compose up
+docker-compose up --build
 ```
+
+- Front end will be in `http://localhost:8081/`.
+- Back end will be example `http://localhost:8080/countries/v1/`. 
+
+⚠️ fix WireMock, so you can remove skip test flag! ⚠️
 
 # Front end.
 

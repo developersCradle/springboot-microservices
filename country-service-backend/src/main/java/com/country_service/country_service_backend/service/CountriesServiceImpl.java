@@ -48,7 +48,7 @@ public class CountriesServiceImpl implements CountriesService {
 	
 	@Override
 	public Mono<Country> getInformationAboutCountry(String countryName) {
-		
+		 //TODO(heikki) error throw some right exception if input is incorrect. Wrong country -> error message is "no population for country", its should be no country found to begin with!
 		 Mono<CountryPopulationSingleCountResponseDto> populationMono = countriesNowRestClient.getCountyWithPopulationByGet(countryName).last(); // for latest population from API.
 		 Mono<CountryFlagImageInfoResponseDto> flagMono = countriesNowRestClient.getCountryWithFlagUrlByGet(countryName); // for flag URL from API.
 		 Mono<CountryCapitalInfoResponseDto> capitalMono = countriesNowRestClient.getCountyWithCapitalByGet(countryName); // for getting capital from API.

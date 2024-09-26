@@ -11,12 +11,12 @@ import reactor.core.publisher.Mono;
 
 public interface CountriesNowRestClient {
 	
-	/* Flux since REST endpoint returns multiple values, even thought its wrapped in Mono */
+	/* Flux since REST end point returns multiple values, even thought it will be wrapped into the Mono in the end */
 	Flux<CountryIsoResponseDto> getCountriesWithIsoByGet();
 
 	@Deprecated
 	Mono<String> getCountryWithPopulationByPost(String countryName);
-	/* Flux since REST endpoint returns multiple values, even thought its wrapped in Mono */
+	/* Flux since REST end point returns multiple values, even thought it will be wrapped into the Mono in the end */
 	Flux<CountryPopulationSingleCountResponseDto> getCountyWithPopulationByGet(String countryName);
 	
 	@Deprecated

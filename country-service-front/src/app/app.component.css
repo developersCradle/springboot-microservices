@@ -1,6 +1,47 @@
 @import url(https://db.onlinewebfonts.com/c/22bbdd53424bef8a0c11fde5ed420f5f?family=NordeaSansSmall-Regular); 
 /*Source: ht tps://www.onlinewebfonts.com/download/22bbdd53424bef8a0c11fde5ed420f5f */
 
+
+
 * {
-    font-family: "NordeaSansSmall-Regular"; 
+    box-sizing: border-box;
+    color: blue;
+}
+
+ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    list-style-type: none;
+    padding: 0;
+}
+
+ul li a {
+    min-height: 4rem;
+    min-width: 15rem;
+    display: flex;
+    margin: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 2px solid black;
+    border-radius: 10px;
+    box-shadow: 2px 5px 5px gray;
+}
+
+ul li a div {
+    margin-left: 1.0rem;
+    margin-right: 1.0rem;
+    margin-top: .5rem;
+}
+
+a {
+    text-decoration: none;
+}
+
+li a:hover {
+    opacity: 0.5;
+    cursor: pointer;
+    
 }

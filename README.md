@@ -90,7 +90,7 @@ You get bonus points if:
             - ✅**WireMock**✅ for testing external APIs. In progress ♻️ **Could not get this working, for now** ♻️.
 - [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/) 
     - ✅**Docker**✅ for easy deployment. 
-
+        - ⚠️**Although**⚠️, this task should be approached as microservice as possible. This solution have been dockerize under one `.yml` file for sake of simplicity. 
 - [![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)](#)
     - ✅**Angular**✅  front end, because i like it!
 
@@ -141,10 +141,12 @@ docker-compose up --build
 # Front end.
 
 <p align="center">
-    <img id="nordea" src="frontForNow.PNG" width=600>
+    <img src="frontForNow.PNG" width=600>
 </p>
 
-- As being back end developer front end is low priority, but for now it has somewhat working list! Focusing now back end test/docker/running.
+- Front end with search function.
+
+- As being back end developer front end is low priority, but for now it has somewhat working list! Focusing now back end tests.
 
 ## How to run the front end.
 
@@ -167,7 +169,8 @@ docker-compose up --build
  ./mvnw spring-boot::run
 ```
  - To check backend separately. Try `http://localhost:8080/countries/v1/`. For other endpoints check documentation.
-## Maven(backup way)
+
+## Maven (backup way).
 
 ```bash
 cd country-service-backend

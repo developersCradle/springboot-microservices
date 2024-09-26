@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CountryService } from '../services/country/country.service';
+import { map } from 'rxjs';
+import { Country } from '../types/Country';
 
 @Component({
   selector: 'app-header',
@@ -6,10 +10,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
-  constructor() { }
-
+  
   ngOnInit(): void {
   }
-
 }

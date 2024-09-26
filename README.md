@@ -144,9 +144,9 @@ docker-compose up --build
     <img src="frontForNow.PNG" width=600>
 </p>
 
-- Front end with search function.
+- Front end with search function and clicking will show country with relevant information.
 
-- As being back end developer front end is low priority, but for now it has somewhat working list! Focusing now back end tests.
+- ⚠️make error page.⚠️
 
 ## How to run the front end.
 

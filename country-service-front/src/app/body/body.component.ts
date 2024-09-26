@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CountryService } from '../services/country/country.service';
 import { Country } from '../types/Country';
 import { ActivatedRoute } from '@angular/router';
-import { Countries } from '../types/Countries';
+import { MatDialog } from '@angular/material/dialog'; // Import MatDialog service
 import { map } from 'rxjs';
+import { CountryDialogComponent } from '../country-dialog-component/country-dialog.component';
 
 @Component({
   selector: 'app-body',
@@ -16,16 +17,14 @@ export class BodyComponent implements OnInit {
 
   searchCountry : string = ''; //Filtering by search
 
-  constructor(private cs: CountryService, private route: ActivatedRoute) { }
-
-
+  constructor(private cs: CountryService, private route: ActivatedRoute, private dialog: MatDialog  ) { }
 
   ngOnInit(): void {
-
 
     this.route.params.subscribe(params => {
 
       console.log(params);
+
       this.searchCountry = params['searchCountry']; //Filtering by search
 
       if (this.searchCountry && this.searchCountry.trim() !== '') {
@@ -47,11 +46,25 @@ export class BodyComponent implements OnInit {
         );
 
       } else {
-        //call from home page
+        //call to get all countries
         this.cs.getAllCountries().subscribe(allCountries => {
           this.countries = allCountries;
         });
       }
     });
+  }
+
+  openDialog(country: Country): void {
+    var countryName = country.name;
+    this.cs.getInformationAboutCountry(countryName).subscribe( //Click happened
+      (data) => {
+        this.dialog.open(CountryDialogComponent, {
+          data: data 
+        });
+      },
+      (error) => {
+        console.error('Error fetching country data', error);
+      }
+    );
   }
 }

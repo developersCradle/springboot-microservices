@@ -2,7 +2,7 @@
 
 <ul>
     <li *ngFor="let country of countries">
-        <a>
+        <a (click)="openDialog(country)">
             <div><b>{{country.name}}</b></div>
             <div>{{country.country_code}}</div>
         </a>

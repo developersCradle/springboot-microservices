@@ -10,7 +10,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 })
 export class SearchComponent implements OnInit {
   
-  @Input() searchCountry : string = ''; //Input form parent. Route won't send to multiple component.
+  @Input() searchCountry : string = ''; //Input form parent. Route won't send params to multiple component, so we catch it here.
   
   constructor(private route : ActivatedRoute, private router : Router) { }
 

@@ -8,6 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { SearchComponent } from './search/search.component';
 import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog'; // Correct import for MatDialogModule
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Required for animations
 
 @NgModule({
   declarations: [
@@ -21,6 +23,8 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
+    MatDialogModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

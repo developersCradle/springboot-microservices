@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/countries/v1/' // Development API URL
+  getCountriesBaseUrl: 'http://localhost:8080/countries/v1/', // Development API URL
 };
 
 /*

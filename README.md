@@ -63,6 +63,7 @@ You get bonus points if:
     - ❌ **Feign Client** ❌ Also synchronous. [Feign Client](https://www.baeldung.com/spring-boot-feignclient-vs-webclient).
 - [![Netty](https://img.shields.io/badge/Netty-grey?style=for-the-badge&logo=googleearth&logoColor=FFFFFF)](https://projectreactor.io/docs/netty/1.1.21/reference/index.html).
     - ✅**Netty**✅ is suited for Microservices Architecture, for its non-blocking I/O client-server nature. This for bank end.
+    - ❌ **Apache Tomcat** ❌ Default Spring server, more suited to those who would be using Spring MVC.
 - [![Lombok](https://img.shields.io/badge/Lombok-green?style=for-the-badge)](https://docs.spring.io/spring-framework/reference/web/webflux.html). 
     - ✅**Lombok**✅ For reducing boilerplate code.
 
@@ -85,13 +86,17 @@ You get bonus points if:
         - For Controller end points.
     - **Integration Tests**:
         - [![WebTestClient](https://img.shields.io/badge/WebTestClient-grey?style=for-the-badge&logo=spring)](https://docs.spring.io/spring-framework/reference/testing/webtestclient.html).
-            - Inside Spring application.
+            - ✅**WebTestClient**✅ Inside Spring application.
         - [![WireMock](https://img.shields.io/badge/WireMock%20-grey?style=for-the-badge)](https://wiremock.org/).
             - ✅**WireMock**✅ for testing external APIs. In progress ♻️ **Could not get this working, for now** ♻️.
 - [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/) 
     - ✅**Docker**✅ for easy deployment. 
         - ⚠️**Although**⚠️, this task should be approached as microservice as possible. This solution have been dockerize under one `.yml` file for sake of simplicity. 
-- [![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)](#)
+
+- [![Apache-Maven](https://img.shields.io/badge/apache%20maven-gray?style=for-the-badge&logo=apachemaven&logoColor=red)](https://maven.apache.org/)
+    - ✅**Maven**✅ Building tool, because i like it and it was in specifications!
+
+- [![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev/)
     - ✅**Angular**✅  front end, because i like it!
 
 - [![nginx](https://img.shields.io/badge/nginx-grey?style=for-the-badge&logo=nginx)](https://nginx.org/en/)

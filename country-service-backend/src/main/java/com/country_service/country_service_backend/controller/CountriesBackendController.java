@@ -11,12 +11,12 @@ import com.country_service.country_service_backend.domain.Countries;
 import com.country_service.country_service_backend.domain.Country;
 import com.country_service.country_service_backend.service.CountriesServiceImpl;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/countries/v1")
-//@Validated
+@Validated
 public class CountriesBackendController {
 
 	private CountriesServiceImpl countriesService;
@@ -40,9 +40,14 @@ public class CountriesBackendController {
         		.log(); // If message was OK, put body into inside to the ResponseEntity. With method reference.
     }
 	
-	//TODO (Heikki, Validation) add bean validation for @PathVariable, not supported directly.
+
+	// Bean validation, shortest country name in English were 4 character long, like Laos. Longest were United Kingdom of Great Britain and Northern Ireland.
     @GetMapping("/{nameOfCountry}")
-    public Mono<ResponseEntity<Country>> getInformationAboutCountry(@PathVariable @NotBlank(message = "error in name") String nameOfCountry) {
+    public Mono<ResponseEntity<Country>> getInformationAboutCountry(@PathVariable @Size(
+    		  min = 4,
+    		  max = 56,
+    		  message = "The country name must be between {min} and {max} characters long."
+    		) String nameOfCountry) {
     	return countriesService.getInformationAboutCountry(nameOfCountry)
     	        .map(country -> { // If message was OK, put body into inside to the ResponseEntity. Same, but with traditional way.
     	        	return ResponseEntity.ok().body(country);

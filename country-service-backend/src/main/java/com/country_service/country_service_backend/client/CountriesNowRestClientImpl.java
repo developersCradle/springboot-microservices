@@ -141,7 +141,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithPopulationByPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
-  
+		// Adding to more to this idea. HTTP 101 Switching Protocols: The server is switching to the protocol the client requested?
 	}
 
 	/*
@@ -238,7 +238,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithFlagUrlByPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
-		
+		// Adding to more to this idea. HTTP 101 Switching Protocols: The server is switching to the protocol the client requested?
 	}
 
 	/* 
@@ -333,6 +333,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithCapitalPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
+		// Adding to more to this idea. HTTP 101 Switching Protocols: The server is switching to the protocol the client requested?
 	}
 
 	/*

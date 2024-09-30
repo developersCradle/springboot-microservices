@@ -36,9 +36,9 @@ public class CountriesBackendControllerUnitTest {
 	/*
 	 *  Unit test getCountries() end point.
 	 */
-	
+	  
 	@Test
-	void getAllCountries() {
+	void getAllCountries_shouldReturn2xx_whenValidInput() {
 
 		List<Country> listOfCountries = new ArrayList<>();
 	    listOfCountries.add(new Country("Afghanistan", "AF", "Kabul", 38928346, "https://flagcdn.com/w320/af.png"));
@@ -71,7 +71,7 @@ public class CountriesBackendControllerUnitTest {
 	 */
 	
 	@Test
-	void getInformationAboutCountry() {
+	void getInformationAboutCountry_shouldReturn2xx_whenValidInput() {
 
 		String nameOfCountry= "United States";
 		
@@ -95,32 +95,53 @@ public class CountriesBackendControllerUnitTest {
 	}
 	
 	
-	
-	//TODO (Heikki, Validation) add bean validation for @PathVariable, not supported directly.
 	/*
+	 *  Unit test getInformationAboutCountry() for Bean validation.
+	 */
+	
 	@Test
-	void getInformationAboutCountry_validation() {
+	void getInformationAboutCountry_validationError_whenInputTooShort() {
 
-		String nameOfCountry= " ";
+		String nameOfCountry= "sd";
 		
-		Country usa = new Country("United States", " ", "Washington, D.C.", 331002651,
-				"https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg");
-		
-	    when(countriesService.getInformationAboutCountry(anyString())).thenReturn(Mono.just(usa));
+	    webServiceClient
+                .get()
+                .uri(COUNTRIES_URL + "/{nameOfCountry}", nameOfCountry)
+                .exchange()
+                .expectStatus()
+                .is4xxClientError()
+                .expectBody(String.class) 
+                .consumeWith(response -> {
+	                var responseBody = response.getResponseBody(); // get error body.
+			        System.out.println("ResponseBody : " + responseBody);
+	                assertNotNull(responseBody);
+	                var expectedErrorMessage =  "The country name must be between 4 and 56 characters long."; // For now, we have only one validation.
+			        assertEquals(responseBody, expectedErrorMessage); 
+	    });
+		}
+	
+	/*
+	 *  Unit test getInformationAboutCountry() for Bean validation.
+	 */
+	
+	@Test
+	void getInformationAboutCountry_validationError_whenInputTooLong() {
+
+		String nameOfCountry= "nordeaMoney$$$$€€€".repeat(20); //Definitely too long! Needs to be more than 56 character. 
 
 	    webServiceClient
                 .get()
                 .uri(COUNTRIES_URL + "/{nameOfCountry}", nameOfCountry)
                 .exchange()
                 .expectStatus()
-                .isBadRequest()
-                .expectBody() 
-                .jsonPath("$.name").isEqualTo("United States") 
-	    		.jsonPath("$.country_code").isEqualTo("US")
-	    		.jsonPath("$.capital").isEqualTo("Washington, D.C.")
-	    		.jsonPath("$.population").isEqualTo(331002651)
-	    		.jsonPath("$.flag_file_url").isEqualTo("https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg");
-	}
-	*/
-	
+                .is4xxClientError()
+                .expectBody(String.class) 
+                .consumeWith(response -> {
+	                var responseBody = response.getResponseBody(); // get error body.
+			        System.out.println("ResponseBody : " + responseBody);
+	                assertNotNull(responseBody);
+	                var expectedErrorMessage =  "The country name must be between 4 and 56 characters long."; // For now, we have only one validation.
+			        assertEquals(responseBody, expectedErrorMessage); 
+	    });
+		}
 }

@@ -1,5 +1,8 @@
 package com.country_service.country_service_backend.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -108,9 +111,12 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 
 //		 url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
+		Map<String, String> param = new HashMap<>();
+		param.put("country", "Finland");
+		
 		return webClient.post()
 				.uri(url)
-				.bodyValue(new ParamClass("Finland"))
+				.bodyValue(param)
 				.retrieve()
 				.onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
                 	
@@ -140,7 +146,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 				.retryWhen(RetryUtil.retrySpec())
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithPopulationByPost: " + result));
 		
-		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
+		// TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
 		// Adding to more to this idea. HTTP 101 Switching Protocols: The server is switching to the protocol the client requested?
 	}
 
@@ -205,9 +211,12 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 		
 		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
 		
+		Map<String, String> param = new HashMap<>();
+		param.put("country", "NG");
+		
 		return webClient.post()
 				.uri(url)
-				.bodyValue(new ParamClass("NG"))
+				.bodyValue(param)
 				.retrieve()
 				.onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
                 	
@@ -297,12 +306,16 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	public Mono<String> getCountyWithCapitalByPost(String countryName) {
 		
 		String url = countriesNowUrl.concat("/capital");
-		
+
 		// url = "https://test.requestcatcher.com/"; // Testing POST working correctly.
+		
+		Map<String, String> param = new HashMap<>();
+		param.put("country", "nigeria");
+		
 		
 		return webClient.post()
 				.uri(url)
-				.bodyValue(new ParamClass("nigeria"))
+				.bodyValue(param)
 				.retrieve()
 				.onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
                 	

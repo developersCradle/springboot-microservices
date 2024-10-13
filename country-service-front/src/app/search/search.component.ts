@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Action } from 'rxjs/internal/scheduler/Action';
 
 
 @Component({

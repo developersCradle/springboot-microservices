@@ -18,13 +18,23 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import com.country_service.country_service_backend.domain.Countries;
 import com.country_service.country_service_backend.domain.Country;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT) // Integration test should be running from some other ports, than the normal one for sake of occupying wrong ports when running.
 @ActiveProfiles("test")	// Get different profiles from .yml file, its better to use other than default, since it can conflict with the ports if there is db configured.
 @AutoConfigureWebTestClient
 @AutoConfigureWireMock(port = 0) //(port = 0) is random port. Also @AutoConfigureWireMock automatically starts a WireMock server on a random port
-public class CountriesBackendControllerIntgTest {
+//@AutoConfigureWireMock(stubs="classpath:/resources/__files")
 
+public class CountriesBackendControllerIntgTest {
+	
     @Autowired
     WebTestClient webTestClient; // Web client for Unit testing.
     
@@ -44,10 +54,14 @@ public class CountriesBackendControllerIntgTest {
     @Test
     void getInformationAboutCountry_ReturnsSuccess_AgainstRealAPI() {
     	  
-    	//given
+    	// Given - START.
     	String countryName = "Finland";
+    	// Given - END.
     	
-        //When
+    	// When - START.
+    	// When - END.
+    	
+    	// Then - START.
         webTestClient
             .get()
             .uri(COUNTRIES_BASE_URL + "{nameOfCountry}", countryName)
@@ -55,7 +69,6 @@ public class CountriesBackendControllerIntgTest {
             .expectStatus().isOk()
             .expectBody(Country.class)
             .consumeWith(response -> {
-            //Then
             	Country country = response.getResponseBody();
                 assertNotNull(country);
                 assertEquals("Finland", country.getName());
@@ -64,6 +77,7 @@ public class CountriesBackendControllerIntgTest {
                 assertEquals(5515525, country.getPopulation());
                 assertEquals("https://upload.wikimedia.org/wikipedia/commons/b/bc/Flag_of_Finland.svg", country.getFlagFileUrl());
     	    });
+        // Then - END.
     }
 	
 
@@ -76,7 +90,10 @@ public class CountriesBackendControllerIntgTest {
     @Test
     void getAllCountries_ReturnsSuccess_AgainstRealAPI() {
     	
-      	//Given
+    	// Given - START.
+    	// Given - START.
+    	// When - START.
+    	// When - START.
         
         //When
         webTestClient
@@ -104,10 +121,20 @@ public class CountriesBackendControllerIntgTest {
 	/*
 	 * Experiment, cannot get WireMock working to test disconnections or other network errors.
 	 * TODO Heikki(WireMock) Get this thing working!!!
-	
+	*/ 
+    
+    /*
     @Test
     void getInformationAboutCountryIntgrTest() {
         
+    	
+    	 stubFor(post("/my/resource")
+    		        .withHeader("Content-Type", containing("xml"))
+    		        .willReturn(ok()
+    		            .withHeader("Content-Type", "text/xml")
+    		            .withBody("<response>SUCCESS</response>")));
+    	
+    	
     	//given
         String countryName = "Nordea";
 
@@ -133,6 +160,28 @@ public class CountriesBackendControllerIntgTest {
         
 
     }
+    */
+
+    
+    
+    @Test
+    public void testExternalApi() {
+        // Stubbing the external API using WireMock
+    	 stubFor(post(urlEqualTo("/api/v0.1/countries/flag/images"))
+            .willReturn(aResponse()
+                .withHeader("Content-Type", "application/json")
+                .withBody("{ \"message\": \"Hello from Mocked API\" }")
+                .withStatus(200)));
+
+        // Make a request to the mocked API and verify the response
+    	webTestClient.post().uri("/api/v0.1/countries/flag/images")
+            .exchange()
+            .expectStatus().isOk()
+            .expectBody()
+            .jsonPath("$.message").isEqualTo("Hello from Mocked API");
+    }
+    
+    
     
     @Test
     void getAllCountriesIntgrTest() {
@@ -141,11 +190,11 @@ public class CountriesBackendControllerIntgTest {
 		String url = COUNTRIES_NOW_URL.concat("iso");
 		
 		System.out.println(url);
-		System.out.println(COUNTRIES_URL);
+		System.out.println(COUNTRIES_NOW_URL);
 
 		// Stubbing WireMock
-		stubFor(get(urlEqualTo("/api/v0.1/countries/iso")).willReturn(aResponse()
-				.withHeader("Content-Type", "text/plain").withBody("Nordea vastaus!")));
+		stubFor(get("countriesnow.space/api/v0.1/countries/iso").willReturn(aResponse()
+				.withHeader("Content-Type", "application/json").withBodyFile("all-countries.json")));
 		// We're asserting if WireMock responded properly
 		
 		//URL is anything after port!
@@ -169,7 +218,7 @@ public class CountriesBackendControllerIntgTest {
 		
 
 		webTestClient.get()
-	    .uri(COUNTRIES_URL)  // Ensure this matches the stubbed URL
+	    .uri(COUNTRIES_BASE_URL)  // Ensure this matches the stubbed URL
 	    .exchange()
 	    .expectStatus().isOk()
 	    .expectBody(String.class)
@@ -181,8 +230,6 @@ public class CountriesBackendControllerIntgTest {
 
 	}
 
-
-	*/
 	
 
     }

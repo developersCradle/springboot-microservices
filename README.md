@@ -83,6 +83,7 @@ You get bonus points if:
 - We are making tests!
     - **Unit Tests**:
         - For Bean Validation.
+        - For Service Layer.
         - For Controller end points.
     - **Integration Tests**:
         - [![WebTestClient](https://img.shields.io/badge/WebTestClient-grey?style=for-the-badge&logo=spring)](https://docs.spring.io/spring-framework/reference/testing/webtestclient.html).

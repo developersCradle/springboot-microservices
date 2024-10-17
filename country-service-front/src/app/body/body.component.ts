@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog'; // Import MatDialog service
 import { map } from 'rxjs';
 import { CountryDialogComponent } from '../country-dialog-component/country-dialog.component';
+import { ErrorDialogComponent } from '../error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-body',
@@ -64,6 +65,12 @@ export class BodyComponent implements OnInit {
       },
       (error) => {
         console.error('Error fetching country data', error);
+
+
+        this.dialog.open(ErrorDialogComponent, {
+          data: error || 'No information about country'
+        });
+        
       }
     );
   }

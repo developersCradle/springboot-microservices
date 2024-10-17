@@ -9,7 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { SearchComponent } from './search/search.component';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog'; // Correct import for MatDialogModule
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Required for animations
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component'; // Required for animations
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; 
     HeaderComponent,
     SearchComponent,
     BodyComponent,
+    ErrorDialogComponent,
   ],
   imports: [
     BrowserModule,

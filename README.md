@@ -150,9 +150,7 @@ docker-compose up --build
     <img src="frontForNow.PNG" width=600>
 </p>
 
-- Front end with search function and clicking will show country with relevant information.
-
-- ⚠️make error page.⚠️
+- Front end with search function and clicking will show country with relevant information. With error page.
 
 ## How to run the front end.
 

@@ -4,7 +4,15 @@ public class CountriesNowClientException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 	private String message;
-    private Integer statusCode;
+    private String country;
+	private Integer statusCode;
+    
+    public CountriesNowClientException(String message, String country, Integer statusCode) {
+        super(message);
+        this.country = country;
+        this.message = message;
+        this.statusCode = statusCode;
+    }
     
     public CountriesNowClientException(String message, Integer statusCode) {
         super(message);
@@ -28,4 +36,12 @@ public class CountriesNowClientException extends RuntimeException {
     public void setStatusCode(Integer statusCode) {
         this.statusCode = statusCode;
     }
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
 }

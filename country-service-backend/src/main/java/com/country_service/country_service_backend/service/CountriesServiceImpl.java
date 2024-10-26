@@ -48,22 +48,23 @@ public class CountriesServiceImpl implements CountriesService {
 	
 	@Override
 	public Mono<Country> getInformationAboutCountry(String countryName) {
-		 //TODO(heikki) error throw some right exception if input is incorrect. Wrong country -> error message is "no population for country", its should be no country found to begin with!
 		 Mono<CountryPopulationSingleCountResponseDto> populationMono = countriesNowRestClient.getCountyWithPopulationByGet(countryName).last(); // for latest population from API.
 		 Mono<CountryFlagImageInfoResponseDto> flagMono = countriesNowRestClient.getCountryWithFlagUrlByGet(countryName); // for flag URL from API.
 		 Mono<CountryCapitalInfoResponseDto> capitalMono = countriesNowRestClient.getCountyWithCapitalByGet(countryName); // for getting capital from API.
-		
-		    return Mono.zip(populationMono, flagMono, capitalMono)
+		    
+		 return Mono.zip(populationMono, flagMono, capitalMono)
 		            .map(tuple -> {
 		                CountryPopulationSingleCountResponseDto populationDto = tuple.getT1();
 		                CountryFlagImageInfoResponseDto flagDto = tuple.getT2();
 		                CountryCapitalInfoResponseDto capitalDto = tuple.getT3();
+		                
+		                
 		                return new Country(
-		                		flagDto.getName(), // name of country.
-		                		flagDto.getIso2(), // country_code, Iso2 will be used, since it was the same format as in specifications. Specification ISO_3166-1_alpha-2
-		                		capitalDto.getCapital(), // capital         
-		                		populationDto.getValue(), // population, latest which comes from API
-		                		flagDto.getFlag() // URL to flag              
+		                		flagDto.getName(), // Name of country.
+		                		flagDto.getIso2(), // Country_code, Iso2 will be used, since it was the same format as in specifications. Specification ISO_3166-1_alpha-2.
+		                		capitalDto.getCapital(), // Capital.         
+		                		populationDto.getValue(), // Population, latest which comes from API.
+		                		flagDto.getFlag() // URL to flag.              
 		                );
 		            });
 	}
@@ -72,7 +73,7 @@ public class CountriesServiceImpl implements CountriesService {
 	@Override
 	public Mono<?> getBetaStuff() {
 		
-		return countriesNowRestClient.getCountryWithPopulationByPost("Finland");
+		return countriesNowRestClient.getCountyWithFlagUrlByPost("Finland");
 	}
 
 }

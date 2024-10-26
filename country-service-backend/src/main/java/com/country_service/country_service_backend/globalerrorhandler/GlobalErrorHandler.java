@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /*
  * Logging is called handleClientException for reason that, "Client exceptions refer to errors that are caused by incorrect or invalid requests made by the client". They all comes from invalid user input.
- * Role of this class will be handle Client exceptions, for now. 
+ * Its recommended to have GlobalErrorHandler in Spring.
  */
 
 @ControllerAdvice
@@ -28,12 +28,19 @@ public class GlobalErrorHandler {
 
         log.error("Exception Caught in handleClientException: {}", exception.getMessage(), exception);
         
+        /*
+         * For now, we use this. All 4xx related error in CountriesNowClient are when something is not found. 
+         */
+        if (exception instanceof CountriesNowClientException) {
+        	return ResponseEntity.status(exception.getStatusCode()).body("No country found with the given name: " + exception.getCountry());
+		}
+        
         return ResponseEntity.status(exception.getStatusCode()).body(exception.getMessage()); // We can map error messages  here dynamically, like such.
     }
 
 
     @ExceptionHandler
-    public ResponseEntity<String> handleRequestBodyError(ConstraintViolationException exception) { //Handling Bean validation error.
+    public ResponseEntity<String> handleRequestBodyError(ConstraintViolationException exception) { // Handling Bean validation error.
 
     	log.error("Exception Caught in handleClientException: {}", exception.getMessage(), exception);
     	

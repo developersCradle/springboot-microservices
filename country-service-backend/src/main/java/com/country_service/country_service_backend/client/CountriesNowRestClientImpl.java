@@ -62,7 +62,7 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	                .retrieve()
 	                .onStatus(clientResponse -> clientResponse.is4xxClientError(), clientResponse -> {
 	                	
-	                	log.info("Status code is : {}", clientResponse.statusCode().value()); //Logging error.
+	                	log.info("Status code is : {}", clientResponse.statusCode().value()); // Logging error.
 	                	
 	                	// Error will be wrapped in Mono.
 	                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
@@ -147,7 +147,6 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithPopulationByPost: " + result));
 		
 		// TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
-		// Adding to more to this idea. HTTP 101 Switching Protocols: The server is switching to the protocol the client requested?
 	}
 
 	/*
@@ -159,7 +158,6 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	public Flux<CountryPopulationSingleCountResponseDto> getCountyWithPopulationByGet(String countryName) {
 		
 		String url = countriesNowUrl.concat("population/q?country={countryName}");
-		
 		 return webClient.get()
 	                .uri(url, countryName)
 	                .retrieve()
@@ -169,9 +167,10 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	                	
 	                	// Error will be wrapped in Mono.
 	                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
-							return Mono.error(new CountriesNowClientException("There is no Country with population. ", clientResponse.statusCode().value()));
+							return Mono.error(new CountriesNowClientException("There is no country with population. ", countryName,  clientResponse.statusCode().value()));
 						}
 	                
+	                 // Rest error of 4xx family will be mapped here.
 	                 // Get the error message with bodyToMono and flatMap.
 	                 return clientResponse.bodyToMono(String.class) // Error code not found.
 	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
@@ -247,7 +246,6 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithFlagUrlByPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
-		// Adding to more to this idea. HTTP 101 Switching Protocols: The server is switching to the protocol the client requested?
 	}
 
 	/* 
@@ -269,9 +267,10 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 	                	
 	                	// Error will be wrapped in Mono.
 	                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
-							return Mono.error(new CountriesNowClientException("There is no Country with flag url. ", clientResponse.statusCode().value()));
+							return Mono.error(new CountriesNowClientException("There is no country with flag url. ", countryName, clientResponse.statusCode().value()));
 						}
 	                
+	                 // Rest error of 4xx family will be mapped here.
 	                 // Get the error message with bodyToMono and flatMap.
 	                 return clientResponse.bodyToMono(String.class) // Error code not found.
 	                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 
@@ -346,7 +345,6 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
 				.doOnSuccess(result -> System.out.println("Response from getCountyWithCapitalPost: " + result));
 		
 		//TODO(Heikki, API usability) Make redirects from here POST to GET request method, if other does not work -> try another one?
-		// Adding to more to this idea. HTTP 101 Switching Protocols: The server is switching to the protocol the client requested?
 	}
 
 	/*
@@ -368,9 +366,10 @@ public class CountriesNowRestClientImpl implements CountriesNowRestClient {
                	
                	// Error will be wrapped in Mono.
                	if (clientResponse.statusCode().equals(HttpStatus.NOT_FOUND)) { // If not found, exception wrapped into custom error message.
-						return Mono.error(new CountriesNowClientException("There is no Country with capital. ", clientResponse.statusCode().value()));
+						return Mono.error(new CountriesNowClientException("There is no country with capital. ", countryName, clientResponse.statusCode().value()));
 					}
                
+               	// Rest error of 4xx family will be mapped here.
                 // Get the error message with bodyToMono and flatMap.
                 return clientResponse.bodyToMono(String.class) // Error code not found.
                		 .flatMap(responseMessage -> Mono.error( new CountriesNowClientException( 

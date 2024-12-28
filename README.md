@@ -46,12 +46,12 @@ response:
 	- You could use for example the following service: `https://countriesnow.space/`.
 6. Test the implementation as well as it's needed from your perspective.
 7. All the implementations must be runnable locally with our own computer. Write needed instructions to README.md file.
-8. Publish all sources code and relevant files in github or similar service and send the link to the repo so that the implementation can be reviewed.
+8. Publish all sources code and relevant files in GitHub or similar service and send the link to the repo so that the implementation can be reviewed.
 
 You get bonus points if:
 
 - You use and understand [Reactor](https://www.baeldung.com/reactor-core).
-- You create a separate wep application which utilizes the created REST API and shows the relevant country information in a browser.
+- You create a separate web application which utilizes the created REST API and shows the relevant country information in a browser.
 
 ## Architecture Explanation.
 
@@ -67,18 +67,18 @@ You get bonus points if:
 - [![Lombok](https://img.shields.io/badge/Lombok-green?style=for-the-badge)](https://docs.spring.io/spring-framework/reference/web/webflux.html). 
     - ✅**Lombok**✅ For reducing boilerplate code.
 
-- We are making `application.yml` for this microservices.
+- We are making `application.yml` for these microservices.
     - If this microservice would ran in different environment, it would pick up appropriate configurations. 
 
 - Domain classes represents classes inside business logic.
 
-- DTO classes represents REST API and are modeled using `countriesnow.space` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing. I chose not make DTO classes as reusable as possible, every DTO is unique. [ReadMore](https://www.baeldung.com/java-dto-pattern#common-mistakes).
+- DTO classes represents REST API and are modeled using `countriesnow.space` API nesting structure. Meaning package names is from API paths and DTO class names tries to represent the given thing. I chose not to make DTO classes as reusable as possible, every DTO is unique. [Read More](https://www.baeldung.com/java-dto-pattern#common-mistakes).
 
 > We also want to avoid trying to use a single class for many scenarios. 
 
-- I have decided to use **ResponseEntity** in **Controller** class. [ReadMore](https://www.baeldung.com/spring-response-entity).
+- I have decided to use **ResponseEntity** in **Controller** class. [Read More](https://www.baeldung.com/spring-response-entity).
 
-> While **ResponseEntity** is very powerful, we shouldn’t overuse it. In simple cases, there are other options that satisfy our needs and they result in much cleaner code.
+> While **ResponseEntity** is very powerful, we shouldn’t overuse it. In simple cases, there are other options that satisfy our needs, and they result in much cleaner code.
 
 - We are making tests!
     - **Unit Tests**:
@@ -92,15 +92,15 @@ You get bonus points if:
             - ✅**WireMock**✅ for testing external APIs. In progress ♻️ **Could not get this working, for now** ♻️.
 - [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/) 
     - ✅**Docker**✅ for easy deployment. 
-        - ⚠️**Although**⚠️, this task should be approached as microservice as possible. This solution have been dockerize under one `.yml` file for sake of simplicity. 
+        - ⚠️**Although**⚠️, this task should be approached as microservice as possible. This solution has been dockerized under one `.yml` file for sake of simplicity. 
 
 - [![Apache-Maven](https://img.shields.io/badge/apache%20maven-gray?style=for-the-badge&logo=apachemaven&logoColor=red)](https://maven.apache.org/)
-    - ✅**Maven**✅ Building tool, because i like it and it was in specifications!
+    - ✅**Maven**✅ Building tool, because I like it, and it was in specifications!
 
 - [![Angular](https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white)](https://angular.dev/)
-    - ✅**Angular**✅  front end, because i like it!
+    - ✅**Angular**✅ front end, because I like it!
 
-- [![nginx](https://img.shields.io/badge/nginx-grey?style=for-the-badge&logo=nginx)](https://nginx.org/en/)
+- [![Nginx](https://img.shields.io/badge/nginx-grey?style=for-the-badge&logo=nginx)](https://nginx.org/en/)
     - ✅**Nginx**✅ for hosting front end.
 
 - API versioning:
@@ -108,20 +108,20 @@ You get bonus points if:
     - ❌**Query Parameter Versioning**❌.
     - ❌**Header Versioning**❌.
 
-- All **API:s** are implementing **resilience** with **retrying pattern**.
+- All **API’s** are implementing **resilience** with **retrying pattern**.
     - Retry only **5xx** errors.
 
 - Country letter representation "**two letters**" [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) will be used, since it was in specifications.
 
 ### Prerequisites:
-- Lates java JDK is fine to run commands.
+- Latest Java JDK is fine to run commands.
 - Latest Docker.
 
 # Not sure things ⚠️👀?
 
-- I am not sure that, am i  utilizing the  **.subscribe** rightly. Like in this example, i don't have any of such in code directly `.subscribe(this::someFunction, this::someFunctionIfErrorHappened);`. My service is simple passing data to front end by means of **Project Reactor**. Well, yes if there would be db attached, then this would be suitable approach, but i didn't come any use for such case.
+- I am not sure that, am I utilizing the  **.subscribe** rightly. Like in this example, I don't have any of such in code directly `.subscribe(this::someFunction, this::someFunctionIfErrorHappened);`. My service is simple passing data to front end by means of **Project Reactor**. Well, yes if there would be db attached, then this would be suitable approach, but I didn't come any use for such case.
 
-- Other thing is the **Subscriptions** itself, i should make SSE end point to back end and Angular app would listen this stream for new countries? Now its just service for REST api call in world of **Project Reactor**.
+- Other thing is the **Subscriptions** itself, I should make SSE end point to back end and Angular app would listen this stream for new countries? Now its just service for REST API call in world of **Project Reactor**.
 
 # How to run!
 
@@ -160,7 +160,7 @@ docker-compose up --build
  ng serve
 ```
 
-- Check console for website! Normally its `http://localhost:4200/`.
+- Check console for the website! Normally its `http://localhost:4200/`.
 
 # Back end.
 
@@ -237,16 +237,16 @@ java -jar target/country-service-backend-0.0.1-SNAPSHOT.jar
 
 - I came to notice when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/population` it would work for **Postman**, but not for **Reactor Netty**.
 
-- Tool to catch the request were **Request Catcher**, it helped me to distinguish if there were some error in the request what **Reactor Netty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
-    - I noticed the only difference mainly was headers. Upper picture from **Reactor Netty** request and below it is from **Postman**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **Reactor Netty** so it would work, but my luck failed. 
+- Tool to catch the request was **Request Catcher**, it helped me to distinguish if there were some error in the request what **Reactor Netty** was making. URL of catcher `https://test.requestcatcher.com/`. **POST** didn't work for some reason and could not get any stream of data back from **Web Client** using DTO classes.
+    - I noticed the only difference mainly was in headers. Upper picture from **Reactor Netty** request and below it is from **Postman**, which worked. I tried to change **User-Agent** to `User-Agent: PostmanRuntime/7.42.0` in **Reactor Netty** so it would work, but my luck failed. 
 
 <img src="doneFromNettyHeaders.PNG" width="500"  height="300">
 
 <img src="doneFromPostManHeaders.PNG" width="500" height="300">
 
-- Due to the inspections how Postman had it working with this API. It had following settings `Accept: */*`. 
+- Due to the inspections how Postman had it working with this API. It had the following settings `Accept: */*`. 
 
-- Luckily returning `Mono<String>` from **POST** function and setting `@Data` for DTO class which was for serving as param class. Also i changed **Reactor Netty** headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
+- Luckily returning `Mono<String>` from **POST** function and setting `@Data` for DTO class which was for serving as param class. Also, I changed **Reactor Netty** headers to `"Accept", MediaType.ALL_VALUE` from `"Accept", MediaType.APPLICATION_JSON_VALUE`(since API gives JSON), gave me positive surprise.
 
 ```
     @Bean
@@ -273,7 +273,7 @@ public class ParamClass {
 
 - Also, WebClient started to worked normally after right Header information `.doOnSuccess(result -> System.out.println("Response: " + result));` gave me `Response: Moved Permanently. Redirecting to /api/v0.1/countries/population/q?country=Finland`.
 
-- All thought it was saying **redirecting**, i could not catch redirect message in network tab. Maybe it was due **Reactor Netty** needs to be configured to process these one, but for now i decided to just use this **hint** as API query and move forward with the task :)
+- All thought it was saying **redirecting**, I could not catch redirect message in network tab. Maybe it was a due **Reactor Netty** needs to be configured to process these one, but for now I just decided to use this **hint** as API query and move forward with the task :)
 
 <img  src="noRedirectCaptured.PNG" alt="alt text" width="600"/>
 
@@ -281,7 +281,7 @@ public class ParamClass {
 <details>
 <summary id="problem2">Weird Feature 2.</summary>
 
-- I came to same conclusion as last error message when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/flag/images` it would work for **Postman**, but not for **Reactor Netty**. This time message was `"Moved Permanently. Redirecting to /api/v0.1/countries/flag/images/q?country=NG"` and i had much fun clicking eastern egg like 5 minutes :D. No redirect messages again.
+- I came to same conclusion as last error message when making **POST** request to the address of `https://countriesnow.space/api/v0.1/countries/flag/images` it would work for **Postman**, but not for **Reactor Netty**. This time message was `"Moved Permanently. Redirecting to /api/v0.1/countries/flag/images/q?country=NG"` and I had much fun clicking eastern egg like 5 minutes :D. No redirect messages again.
 
 <img  src="positveSupriseAboutPOSTapiKauneutta.PNG" alt="alt text" width="600"/>
 

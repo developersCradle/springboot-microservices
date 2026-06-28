@@ -18,7 +18,7 @@ services:
     ports:
       - "8081:80"  # Exposing the Angular app on port 8081 and nginx exposing inside port 80.
     depends_on:
-      - spring-app  # Front end waits for backend
+      - spring-app  # Front end waits for backend.
     restart: always # Should always restart if it stops, regardless of the exit status.
 
 
